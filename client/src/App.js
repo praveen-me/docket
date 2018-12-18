@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import './scss/app.scss';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import LogIn from './components/LogIn';
@@ -13,7 +14,7 @@ class App extends Component {
         <React.Fragment>
           <Header />
           <Switch>
-            <Route path='/' component={Dashboard}/>
+            <Route path='/' exact component={Dashboard}/>
             <Route path="/login" component={LogIn}/>
             <Route path="/signup" component={SignUp}/>
           </Switch>

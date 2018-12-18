@@ -1,0 +1,62 @@
+// Import Font
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700');
+
+// Base CSS
+.center {
+  text-align: center;
+}
+
+// Root CSS
+#root {
+ position: relative; 
+ height: 100vh;
+}
+
+.form_container, .form_btn {
+  font-family: 'Roboto', sans-serif;
+}
+
+// Main View CSS
+.form_container {
+  width: 400px;
+  position: absolute;
+  top : 50%;
+  left : 50%;
+  transform: translate(-50%, -50%);  
+}
+
+.form_head {
+  text-align: center;
+  font-weight: 300;
+}
+
+.utils_style {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  margin: 1rem 0;
+  box-sizing: border-box;
+  &:focus {
+    outline: 1px solid #000;
+  }
+}
+
+.form_field {
+  height: 40px;
+  background: #eeeeee;
+  padding-left: 1rem;
+  font-size: 1rem;
+}
+
+.form_btn {
+  font-size: 1.3rem;
+  padding: 0.8rem 0;
+  background: #5665b6;
+  color: #fff;
+  font-weight: 300;
+}
+
+.form_link {
+  text-decoration: none;
+}
