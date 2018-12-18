@@ -10,7 +10,8 @@ class SignUp extends Component {
         fullName : '',
         password : ''
       }, 
-      isLoading : false
+      isLoading : false,
+      msg : ''
     }
   }
 
@@ -25,15 +26,34 @@ class SignUp extends Component {
   } 
 
   handleSubmit = e => {
-    e.prevenyDefault();
-
+    e.preventDefault();
+    this.setState({
+      isLoading : true
+    })
+    
+    if(navigator.onLine) {
+      fetch(`/api/signUp`, {
+        method : "POST", 
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(this.state.userCreds)
+      })
+        .then(res => res.json())
+        .then(data => console.log(data))
+    } else {
+      this.setState({
+        isLoading : false,
+        msg : "Internet is not avialble."
+      })
+    }
   }
   
   render() {
     return (
       <div className="form_container SignUp">
         <h1 className="form_head">SignUp</h1>
-        <form className="form">
+        <form className="form" onSubmit={this.handleSubmit}>
           <input type="text" 
           className="form_field utils_style" 
           placeholder="Full Name"
