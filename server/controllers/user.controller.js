@@ -7,16 +7,16 @@ module.exports = {
       ...req.body
     })
 
-    User.findOne({username : req.username}, (err, data) => {
+    User.findOne({username : req.body.username}, (err, data) => {
       if(!data) {
-        return res.status(302).json({
-          msg : 'username is not avilable'
-        })
-      } else {
         newUser.save((err, data) => {
           res.json({
             user : data
           })
+        })
+      } else {
+        return res.status(302).json({
+          msg : 'username is not avilable'
         })
       }
     })
@@ -40,5 +40,18 @@ module.exports = {
         })
       });
     })(req, res, next);
+  },
+  isLoggedIn : (req, res) => {
+    if(req.user) {
+      User.findOne({_id : req.user._id} , {password : 0}, (err, data) => {
+        return res.json({
+          user : data
+        })
+      })
+    } else {
+      res.status(401).json({
+        msg : 'You are not logged in.'
+      })
+    }
   }
 }

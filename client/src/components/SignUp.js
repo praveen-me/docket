@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import { signUp } from '../store/actions/auth.action';
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -32,15 +34,10 @@ class SignUp extends Component {
     })
     
     if(navigator.onLine) {
-      fetch(`/api/signUp`, {
-        method : "POST", 
-        headers : {
-          'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify(this.state.userCreds)
+      this.props.signUp(this.state.userCreds);
+      this.setState({
+        isLoading : false
       })
-        .then(res => res.json())
-        .then(data => console.log(data))
     } else {
       this.setState({
         isLoading : false,
@@ -50,6 +47,10 @@ class SignUp extends Component {
   }
   
   render() {
+    const {successMsg, errMsg} = this.props;
+    
+    if(successMsg) return <Redirect to="/login" />
+
     return (
       <div className="form_container SignUp">
         <h1 className="form_head">SignUp</h1>
@@ -78,6 +79,9 @@ class SignUp extends Component {
           name="password"
           onChange={this.handleChange}
           required/>
+          {
+            errMsg ? <p className="center warning-msg">{errMsg}</p> : ''
+          }
           <button className="form_btn utils_style">Signup</button>
           <div className="center">
             <Link to="/login">Login</Link>
@@ -88,4 +92,17 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+function mapDispatchToProps(dispatch) {
+  return {
+    signUp : (data) => dispatch(signUp(data))
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    errMsg : state.errMsg,
+    successMsg : state.successMsg
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
