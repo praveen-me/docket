@@ -6,18 +6,20 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoValue : ''
+      todo : '',
+      isLoading : false
     }
   }
   
   handleChange = e => {
     this.setState({
-      todoValue : e.target.value
+      todo : e.target.value
     })
   }
 
   handleSubmit = e => {
     e.preventDefault();
+    const {currentUser} = this.props;
 
     fetch(`/api/todos`, {
       method : "POST", 
@@ -25,22 +27,35 @@ class Dashboard extends Component {
         'Content-Type' : 'application/json'
       },
       body : JSON.stringify({
-        todo : this.state.todoValue,
-        done : false
+        todo : this.state.todo,
+        userId : currentUser._id 
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.props.dispatch({
+        type : 'SET_TODO',
+        data
       })
     })
   }
 
   render() {
-    const {currentUser} = this.props;
+    const {currentUser, currentTodos} = this.props;
     if(!currentUser._id) return <Redirect to="/login"/>
     
     return (
       <main className="wrapper">
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <input type="text" name="" id="" onChange={this.handleChange}/>
           <button type="submit">Add Todo</button>
         </form>
+
+        {
+          currentTodos.length > 0 && currentTodos.map(todo => (
+            <div>{todo.todo}</div>
+          ))
+        }
       </main>
     );
   }
@@ -48,7 +63,8 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentUser : state.currentUser
+    currentUser : state.currentUser,
+    currentTodos : state.currentTodos
   }
 }
 

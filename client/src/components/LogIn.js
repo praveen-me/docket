@@ -15,16 +15,6 @@ class LogIn extends Component {
       msg : ''
     }
   }
-
-  handleChange = e => {
-    this.setState({
-      ...this.state,
-      userCreds : {
-        ...this.state.userCreds,
-        [e.target.name] : e.target.value
-      }
-    })
-  } 
   
   handleChange = e => {
     this.setState({

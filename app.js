@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+const mongoConnect = require('connect-mongo')(session);
 const app = express();
 
 app.set('view engine', 'pug');
@@ -36,7 +37,8 @@ app.use(session({
   resave : false,
   cookie : {
     maxAge : 360000
-  }
+  },
+  store : new mongoConnect({ url: 'mongodb://localhost/docket-session' })
 }))
 app.use(passport.initialize());
 app.use(passport.session());

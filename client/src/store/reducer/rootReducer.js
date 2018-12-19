@@ -2,6 +2,7 @@ const initState = {
   currentUser : {}, 
   errMsg : '',
   successMsg : '',
+  currentTodos : []
 }
 
 export default function rootReducer(state = initState, action) {
@@ -37,6 +38,14 @@ export default function rootReducer(state = initState, action) {
         errMsg : action.errMsg
       }
     }
+
+    case "SET_TODO" : {
+      console.log(action.data, "in reducer")
+      return {
+        ...state,
+        currentTodos : [...action.data.data]
+      }
+    } 
 
     default : return state
   }

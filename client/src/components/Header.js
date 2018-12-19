@@ -6,7 +6,7 @@ import { setInitialUser } from '../store/actions/auth.action';
 
 class Header extends Component {
   componentDidMount() {
-     this.props.setInitialUser()
+    // this.props.setInitialUser()
   }
   
   

@@ -41,40 +41,35 @@ export function logIn(data) {
       },
       body : JSON.stringify(data)
     })
-      .then(res => {
-        if(res.status === 200) {
-          res.json()
-          .then(data => {
-            return dispatch({
-              type : "LOGIN_SUCCESS",
-              data : data.user
-            })
+    .then(res => {
+      if(res.status === 200) {
+        res.json()
+        .then(data => {
+          return dispatch({
+            type : "LOGIN_SUCCESS",
+            data : data.user
           })
-        } else {
-          res.json()
-          .then(data => {
-            return dispatch({
-              type : "LOGIN_ERR",
-              errMsg : data.msg
-            })
+        })
+      } else {
+        res.json()
+        .then(data => {
+          return dispatch({
+            type : "LOGIN_ERR",
+            errMsg : data.msg
           })
-        }
-      })
+        })
+      }
+    })
   }
 }
 
-export function setInitialUser() {
+export function setInitialUser(cb) {
   return dispatch => {
-    fetch('/api/isLoggedIn')
+      return fetch('/api/isLoggedIn')
       .then(res => {
         if(res.status === 200) {
           res.json()
-          .then(data => {
-            return dispatch({
-              type : "LOGIN_SUCCESS",
-              data : data.user
-            })
-          })
+          .then(data => cb(data))
         }
       })
       
