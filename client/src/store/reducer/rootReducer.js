@@ -22,6 +22,21 @@ export default function rootReducer(state = initState, action) {
       }
     }
 
+    case "LOGIN_SUCCESS" : {
+      return {
+        ...state, 
+        errMsg : '',
+        currentUser : action.data
+      }
+    } 
+
+    case "LOGIN_ERR" : {
+      return {
+        ...state,
+        successMsg : '',
+        errMsg : action.errMsg
+      }
+    }
 
     default : return state
   }
