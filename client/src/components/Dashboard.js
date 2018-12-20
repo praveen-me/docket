@@ -40,20 +40,38 @@ class Dashboard extends Component {
     })
   }
 
+  hanldeDelete = e => {
+    const deleteId = e.target.parentElement.id;
+    fetch(`/api/todos/${deleteId}`, {
+      method : "DELETE",
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.props.dispatch({
+        type : 'SET_TODO',
+        data
+      })
+    })
+  }
+
   render() {
     const {currentUser, currentTodos} = this.props;
     if(!currentUser._id) return <Redirect to="/login"/>
     
     return (
       <main className="wrapper">
-        <form onSubmit={this.handleSubmit}>
+        <h2 className="center todo_form-head">Add Your Todo</h2>
+        <form onSubmit={this.handleSubmit} className="todo-form">
           <input type="text" name="" id="" onChange={this.handleChange}/>
           <button type="submit">Add Todo</button>
         </form>
 
         {
           currentTodos.length > 0 && currentTodos.map(todo => (
-            <div>{todo.todo}</div>
+            <div className="todo-block" id={todo._id}>
+              <p className="todo-name">{todo.todo}</p>
+              <button className="todo-delete" onClick={this.hanldeDelete}>Delete</button>
+            </div>
           ))
         }
       </main>

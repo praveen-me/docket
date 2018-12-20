@@ -11,4 +11,6 @@ router.post('/login', user.logIn);
 
 router.get('/isLoggedIn', user.isLoggedIn);
 
+router.delete('/todos/:id', todo.deleteTodo);
+
 module.exports = router;

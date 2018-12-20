@@ -17,5 +17,16 @@ module.exports = {
         })
       })
     })
+  },
+  deleteTodo : (req, res) => {
+    console.log("delete")
+    const id = req.params.id;
+    Todo.remove({_id : id}, (err, data) => {
+      Todo.find({user : req.user._id}, (err, data) => {
+        res.json({
+          data
+        })
+      })
+    })
   }
 }

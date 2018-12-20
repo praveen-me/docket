@@ -1,5 +1,25 @@
+
+
 // Add normalizer;
 @import './normalizer.scss';
 
+// Import Font
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700');
+
+.wrapper {
+  max-width: 960px;
+  width : 100%;
+  margin: 0 auto;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
 // Add auth
 @import './auth.scss';
+
+@import './Header.scss';
+
+@import './Dashboard.scss'

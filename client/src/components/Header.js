@@ -14,20 +14,22 @@ class Header extends Component {
     const {currentUser} = this.props;
     
     return (
-      <header>
-        <h1>Docket</h1>
-        {
-          !currentUser._id  ? (
-            <div className="auth_links-block">
-              <Link to="/login">Login</Link> <br />
-              <Link to="/signup">Sign Up</Link>
-            </div>
-          ) : (
-            <div className="auth_links-block">
-              <Link to="/logout">Log out</Link>
-            </div>
-          )
-        }
+      <header className="">
+        <div className="shadow wrapper">
+          <Link to="/"><h1>Docket</h1></Link>
+          {
+            !currentUser._id  ? (
+              <div className="auth_links-block">
+                <Link to="/login" className="auth_link">Login</Link>
+                <Link to="/signup" className="auth_link">Sign Up</Link>
+              </div>
+            ) : (
+              <div className="auth_links-block">
+                <Link to="/logout" className="auth_link">Log out</Link>
+              </div>
+            )
+          }
+        </div>
       </header>
     );
   }
