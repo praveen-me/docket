@@ -9,25 +9,51 @@ main {
   input {
     font-size: 1.5rem;
     padding: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+    border: 2px solid #0e564a;
   }
   button {
     font-size: 1.3rem;
+    border: none;
+    background: #0e564a;
+    color: white;
   }
 }
 
 .todo_form-head {
-  font-size: 1.5rem;
-font-weight: 300;
+  font-size: 2rem;
+  font-weight: 300;
 }
 
 .todo-block {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  width: 435px;
+  grid-template-columns: 1fr 8fr 1fr;
+  width: 400px;
   margin: 1rem auto;
+  place-items: center;
+  border-radius: 5px;
+  padding: 0.5rem;
 }
 
 .todo-name {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 0;
+  font-weight: 300;
+  color: #fff;
+}
+
+.todo_done {
+  height: 20px;
+  width: 20px;
+}
+
+.todo-delete {
+  border: none;
+  border-radius: 3px;
+  background: #810101;
+  color: #fff;
+  &:hover {
+    background: #af0202;
+  }
 }

@@ -6,9 +6,9 @@ const auth = require('./../modules/auth');
 
 router.post('/todos', auth.isLoggedIn,todoController.insertTodo);
 
-router.post('/signup', auth.isLoggedIn, userController.signUp);
+router.post('/signup', userController.signUp);
 
-router.post('/login', auth.isLoggedIn, userController.logIn);
+router.post('/login', userController.logIn);
 
 router.get('/isLoggedIn', auth.isLoggedIn, userController.isLoggedIn);
 

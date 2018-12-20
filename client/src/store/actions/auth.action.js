@@ -1,4 +1,4 @@
-export function signUp(data) {
+export function signUp(data, cb) {
   console.log(data)
   return dispatch => {
     fetch(`/api/signUp`, {
@@ -12,6 +12,7 @@ export function signUp(data) {
         if(res.status === 200) {
           res.json()
           .then(data => {
+            cb(true)
             console.log(data)
             return dispatch({
               type : "SIGNUP_SUCCESS", 
@@ -20,6 +21,7 @@ export function signUp(data) {
           })
         } else {
           res.json()
+          cb(true)
           .then(data => {
             console.log(data)
             return dispatch({
@@ -32,7 +34,7 @@ export function signUp(data) {
   }
 }
 
-export function logIn(data) {
+export function logIn(data, cb) {
   return dispatch => {
     fetch(`/api/logIn`, {
       method : "POST", 
@@ -45,6 +47,7 @@ export function logIn(data) {
       if(res.status === 200) {
         res.json()
         .then(data => {
+          cb(true)
           return dispatch({
             type : "LOGIN_SUCCESS",
             data : data.user
@@ -53,6 +56,7 @@ export function logIn(data) {
       } else {
         res.json()
         .then(data => {
+          cb(true)
           return dispatch({
             type : "LOGIN_ERR",
             errMsg : data.msg
