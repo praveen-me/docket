@@ -45,7 +45,13 @@ export default function rootReducer(state = initState, action) {
         ...state,
         currentTodos : [...action.data.data]
       }
-    } 
+    }
+
+    case "LOGOUT_SUCCESS" : {
+      return {
+        ...initState,
+      }
+    }
 
     default : return state
   }

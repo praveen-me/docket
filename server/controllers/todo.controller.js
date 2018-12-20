@@ -1,8 +1,7 @@
 const Todo = require('./../models/Todo');
 
-
 module.exports = {
-  inserTodo : (req, res) => {
+  insertTodo : (req, res) => {
     const todoData = req.body;
 
     const newTodo = new Todo({
@@ -20,12 +19,23 @@ module.exports = {
   },
   deleteTodo : (req, res) => {
     console.log("delete")
+    if(!req.user) {
+      return res.redirect('/')
+    }
+
     const id = req.params.id;
     Todo.remove({_id : id}, (err, data) => {
       Todo.find({user : req.user._id}, (err, data) => {
         res.json({
           data
         })
+      })
+    })
+  },
+  getAllTodos : (req, res) => {
+    Todo.find({user : req.user._id}, (err, data) => {
+      res.json({
+        data
       })
     })
   }

@@ -9,6 +9,16 @@ class Header extends Component {
     // this.props.setInitialUser()
   }
   
+  handleLogOut = e => {
+    fetch(`/api/logout`)
+    .then(res => res.json())
+    .then(data => {
+      this.props.dispatch({
+        type : "LOGOUT_SUCCESS"
+      })
+    })
+  }
+
   
   render() {
     const {currentUser} = this.props;
@@ -25,7 +35,7 @@ class Header extends Component {
               </div>
             ) : (
               <div className="auth_links-block">
-                <Link to="/logout" className="auth_link">Log out</Link>
+                <a className="auth_link" onClick={this.handleLogOut}>Log out</a>
               </div>
             )
           }

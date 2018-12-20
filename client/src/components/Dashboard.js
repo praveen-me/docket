@@ -17,10 +17,21 @@ class Dashboard extends Component {
     })
   }
 
+  componentDidMount() {
+    fetch(`/api/todos`)
+    .then(res => res.json())
+    .then(data => {
+      this.props.dispatch({
+        type : 'SET_TODO',
+        data
+      })
+    })
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const {currentUser} = this.props;
-
+    
     fetch(`/api/todos`, {
       method : "POST", 
       headers : {
@@ -37,7 +48,7 @@ class Dashboard extends Component {
         type : 'SET_TODO',
         data
       })
-    })
+    }) 
   }
 
   hanldeDelete = e => {
@@ -68,7 +79,7 @@ class Dashboard extends Component {
 
         {
           currentTodos.length > 0 && currentTodos.map(todo => (
-            <div className="todo-block" id={todo._id}>
+            <div className="todo-block" id={todo._id} key={todo._id}>
               <p className="todo-name">{todo.todo}</p>
               <button className="todo-delete" onClick={this.hanldeDelete}>Delete</button>
             </div>
