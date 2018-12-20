@@ -18,6 +18,9 @@ main {
     border: none;
     background: #0e564a;
     color: white;
+    &:hover {
+      background: #0da087;
+    }
   }
 }
 

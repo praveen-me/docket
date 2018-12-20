@@ -64,6 +64,10 @@ class Dashboard extends Component {
     })
   }
 
+  handleDone = e => {
+    
+  }
+
 
   render() {
     const {currentUser, currentTodos} = this.props;
@@ -88,7 +92,7 @@ class Dashboard extends Component {
               })(),
               boxShadow : `0px 1px 11px 3px ${this.rgba}`
             }}>
-              <input type="checkbox" className="todo_done" />
+              <input type="checkbox" className="todo_done" onChange={this.handleDone}/>
               <p className="todo-name">{todo.todo}</p>
               <button className="todo-delete" onClick={this.hanldeDelete}>x</button>
             </div>

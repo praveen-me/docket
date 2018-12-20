@@ -55,12 +55,9 @@ module.exports = {
     }
   }, 
   logOut : (req, res) => {
-    console.log('logout called')
-    if(req.user._id) {
-      req.logOut();
-      res.status(200).status({
-        msg : "Log out Successfull."
-      })
-    }
+    req.logOut();
+    res.status(200).json({
+      msg : "Logout Completed"
+    })
   }
 }

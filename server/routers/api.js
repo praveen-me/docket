@@ -18,4 +18,6 @@ router.get('/todos', auth.isLoggedIn, todoController.getAllTodos);
 
 router.get('/logout', auth.isLoggedIn, userController.logOut)
 
+// router.put('/todos/:id')
+
 module.exports = router;

@@ -22,7 +22,7 @@ class Header extends Component {
   
   render() {
     const {currentUser} = this.props;
-    
+
     return (
       <header className="">
         <div className="shadow wrapper">
@@ -35,7 +35,8 @@ class Header extends Component {
               </div>
             ) : (
               <div className="auth_links-block">
-                <a className="auth_link" onClick={this.handleLogOut}>Log out</a>
+                <span className="user-name">Welcome {currentUser.fullName.split(' ')[0]}</span>
+                <a href="#" className="auth_link" onClick={this.handleLogOut}>Log out</a>
               </div>
             )
           }
@@ -53,6 +54,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatch,
     setInitialUser : () => dispatch(setInitialUser())
   }
 }
