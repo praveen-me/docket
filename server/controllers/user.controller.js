@@ -1,63 +1,63 @@
-const User = require('./../models/User');
 const passport = require('passport');
+const User = require('./../models/User');
 
 module.exports = {
-  signUp : (req, res) => {
+  signUp: (req, res) => {
     const newUser = new User({
-      ...req.body
-    })
+      ...req.body,
+    });
 
-    User.findOne({username : req.body.username}, (err, data) => {
-      if(!data) {
-        newUser.save((err, data) => {
+    User.findOne({ username: req.body.username }, (err, data) => {
+      if (!data) {
+        return newUser.save((error, userData) => {
+          if (err) throw err;
           res.json({
-            user : data
-          })
-        })
-      } else {
-        return res.status(302).json({
-          msg : 'username is not avilable'
-        })
+            user: userData,
+          });
+        });
       }
-    })
-  }, 
-  logIn : (req, res, next) => {
-    passport.authenticate('local', function(err, user, info) {
-      if (err) { return next(err); }
-      if (!user) { 
+      return res.status(302).json({
+        msg: 'username is not avilable',
+      });
+    });
+  },
+  logIn: (req, res, next) => {
+    passport.authenticate('local', (err, user) => {
+      if (err) return next(err);
+      if (!user) {
         return res.status(404).json({
-          msg : "Acount not available. Please Sign Up."
-        }) 
+          msg: 'Acount not available. Please Sign Up.',
+        });
       }
-      req.logIn(user, function(err) {
-        if (err) { 
-          return next(err);
-        }
-        User.findOne({_id : user._id} , {password : 0}, (err, data) => {
+      return req.logIn(user, (error) => {
+        if (error) return next(error);
+        return User.findOne({ _id: user._id }, { password: 0 }, (e, data) => {
+          if (e) throw err;
           return res.json({
-            user : data
-          })
-        })
+            user: data,
+          });
+        });
       });
     })(req, res, next);
   },
-  isLoggedIn : (req, res) => {
-    if(req.user) {
-      User.findOne({_id : req.user._id} , {password : 0}, (err, data) => {
+  isLoggedIn: (req, res) => {
+    if (req.user) {
+      User.findOne({ _id: req.user._id }, { password: 0 }, (err, data) => {
+        if (err) throw err;
         return res.json({
-          user : data
-        })
-      })
+          user: data,
+        });
+      });
     } else {
       res.status(401).json({
-        msg : 'You are not logged in.'
-      })
+        msg: 'You are not logged in.',
+      });
     }
-  }, 
-  logOut : (req, res) => {
+  },
+  logOut: (req, res) => {
     req.logOut();
     res.status(200).json({
-      msg : "Logout Completed"
-    })
-  }
-}
+      msg: 'Logout Completed',
+    });
+  },
+};

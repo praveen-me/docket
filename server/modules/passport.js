@@ -1,29 +1,36 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./../models/User');
 
-module.exports = function(passport) {
-  passport.serializeUser(function(user, done) {
+module.exports = (passport) => {
+  // serialize the user session
+  passport.serializeUser((user, done) => {
     done(null, user.id);
   });
-  
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+  // deserialize the user session
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
       done(err, user);
     });
   });
 
+  /* 
+   * this middleware takes username and passpord and use LocalStartegy() after login 
+   * and then compare the username and password with db
+   * and proceed request according to it
+  */
   passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.findOne({ username: username }, function(err, user) {
+    (username, password, done) => {
+      User.findOne({ username }, (err, user) => {
         if (err) { return done(err); }
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
-        user.validPassword(password, function(err, isMatched) {
-          if(!isMatched) return done(null, false)
-          return done(null, user)
-        })
+        // validates the decrypted password and compares it 
+        return user.validPassword(password, (e, isMatched) => {
+          if (!isMatched) return done(null, false);
+          return done(null, user);
+        });
       });
-    }
+    },
   ));
-}
+};

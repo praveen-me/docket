@@ -46,6 +46,7 @@ class Dashboard extends Component {
         this.setState({
           isLoading : false
         })
+        document.getElementById('todoVal').value = ''
       }
     })))
   }
@@ -65,9 +66,8 @@ class Dashboard extends Component {
   }
 
   handleDone = e => {
-    
-  }
 
+  }
 
   render() {
     const {currentUser, currentTodos} = this.props;
@@ -78,7 +78,7 @@ class Dashboard extends Component {
       <main className="wrapper">
         <h2 className="center todo_form-head">Add Your Todo</h2>
         <form onSubmit={this.handleSubmit} className="todo-form">
-          <input type="text" name="" id="" onChange={this.handleChange }/>
+          <input type="text" name="" id="todoVal" onChange={this.handleChange }/>
           <button type="submit">Add Todo</button>
         </form>
         {

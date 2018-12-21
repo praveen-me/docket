@@ -3,12 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import { setInitialUser } from '../store/actions/auth.action';
 
-
 class Header extends Component {
-  componentDidMount() {
-    // this.props.setInitialUser()
-  }
-  
   handleLogOut = e => {
     fetch(`/api/logout`)
     .then(res => res.json())

@@ -1,10 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
 const todoController = require('./../controllers/todo.controller');
 const userController = require('./../controllers/user.controller');
 const auth = require('./../modules/auth');
 
-router.post('/todos', auth.isLoggedIn,todoController.insertTodo);
+router.post('/todos', auth.isLoggedIn, todoController.insertTodo);
 
 router.post('/signup', userController.signUp);
 
@@ -16,7 +17,7 @@ router.delete('/todos/:id', auth.isLoggedIn, todoController.deleteTodo);
 
 router.get('/todos', auth.isLoggedIn, todoController.getAllTodos);
 
-router.get('/logout', auth.isLoggedIn, userController.logOut)
+router.get('/logout', auth.isLoggedIn, userController.logOut);
 
 // router.put('/todos/:id')
 
