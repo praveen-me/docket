@@ -21,7 +21,7 @@ module.exports = {
     console.log('delete');
     const { id } = req.params;
     Todo.remove({ _id: id }, () => {
-      Todo.find({ user: req.user._id }, (err, data) => {
+      Todo.find({ user: req.user.data._id }, (err, data) => {
         res.json({
           data,
         });
@@ -29,7 +29,8 @@ module.exports = {
     });
   },
   getAllTodos: (req, res) => {
-    Todo.find({ user: req.user._id }, (err, data) => {
+    const {username, _id} = req.user;
+    Todo.find({ user:  username ? req.user._id : req.user.data._id }, (err, data) => {
       res.json({
         data,
       });

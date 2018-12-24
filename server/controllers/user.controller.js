@@ -41,23 +41,27 @@ module.exports = {
     })(req, res, next);
   },
   isLoggedIn: (req, res) => {
-    if (req.user) {
-      User.findOne({ _id: req.user._id }, { password: 0 }, (err, data) => {
-        if (err) throw err;
-        return res.json({
-          user: data,
+    console.log(req.user, "in is loggediN")
+    const {username, _id} = req.user;
+    User.findOne({ _id: username ? req.user._id : req.user.data._id }, { password: 0 }, (err, data) => {
+      if (err) throw err;
+      if(!data) {
+        return res.status(401).json({
+          msg: 'You are not logged in.',
         });
+      }
+      return res.json({
+        user: data,
       });
-    } else {
-      res.status(401).json({
-        msg: 'You are not logged in.',
-      });
-    }
+    });
   },
   logOut: (req, res) => {
-    req.logOut();
-    res.status(200).json({
-      msg: 'Logout Completed',
+    req.session.destroy(function(e){
+      req.logout();
+      // res.redirect('/');
+      res.status(200).json({
+        msg: 'Logout Completed',
+      });
     });
   },
 };

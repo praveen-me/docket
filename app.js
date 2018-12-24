@@ -8,11 +8,14 @@ const MongoConnect = require('connect-mongo')(session);
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('./webpack.config');
+const cors = require('cors');
+
 
 const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, './server/views'));
+
 
 // Connecting To Mongodb
 mongoose.connect('mongodb://localhost/docket', { useNewUrlParser: true }, (err) => {
@@ -23,9 +26,9 @@ mongoose.connect('mongodb://localhost/docket', { useNewUrlParser: true }, (err) 
 // Webpack config
 if (process.env.NODE_ENV === 'development') {
   console.log('in webpack hot middleware');
-
+  
   const compiler = webpack(webpackConfig);
-
+  
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath,
@@ -41,6 +44,10 @@ app.use(session({
   },
   store: new MongoConnect({ url: 'mongodb://localhost/docket-session' }),
 }));
+app.use(cors());
+app.options('*', cors());
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 require('./server/modules/passport')(passport);

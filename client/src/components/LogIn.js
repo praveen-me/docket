@@ -4,6 +4,17 @@ import {connect} from 'react-redux';
 import { logIn } from '../store/actions/auth.action';
 import Loader from './Loader';
 
+
+function globalSignIn(user)
+{
+  var profile = user.getBasicProfile();
+  user.profile = profile;
+  
+  console.log("GLOBAL", user);
+}
+
+window.globalSignIn = globalSignIn
+
 class LogIn extends Component {
   constructor(props) {
     super(props);
@@ -49,6 +60,12 @@ class LogIn extends Component {
     }
   }
 
+
+  handleGoogleLogin = e => {
+    fetch(`/api/login/google`);
+    
+  }
+
   render() {
     const {currentUser, errMsg} = this.props;
     const {isLoading} = this.state;
@@ -79,9 +96,11 @@ class LogIn extends Component {
               {/* <a href="#" className="form_link">Forget Password?</a> */}
             </div>
           </form>
+          <a href="http://localhost:8001/api/login/google">
+            <button>Login With Google</button>
+          </a>
         </div>
       )
-
     );
   }
 }
