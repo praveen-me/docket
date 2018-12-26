@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
   username : {type : String, default : ''},
   password : {type : String, default : ''},
   email : String,
+  gitId : {type: String, default : ''},
+  gId : {type : String, default: ''},
   fullName : String,
   todos : [{
     type : mongoose.Schema.Types.ObjectId, ref : 'Todo'

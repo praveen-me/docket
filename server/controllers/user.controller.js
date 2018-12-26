@@ -42,18 +42,24 @@ module.exports = {
   },
   isLoggedIn: (req, res) => {
     console.log(req.user, "in is loggediN")
-    const {username, _id} = req.user;
-    User.findOne({ _id: username ? req.user._id : req.user.data._id }, { password: 0 }, (err, data) => {
-      if (err) throw err;
-      if(!data) {
-        return res.status(401).json({
-          msg: 'You are not logged in.',
+    if(req.user) {
+      const {username, _id} = req.user;
+      User.findOne({ _id: username ? req.user._id : req.user.data._id }, { password: 0 }, (err, data) => {
+        if (err) throw err;
+        if(!data) {
+          return res.status(401).json({
+            msg: 'You are not logged in.',
+          });
+        }
+        return res.json({
+          user: data,
         });
-      }
-      return res.json({
-        user: data,
       });
-    });
+    } else {
+      return res.status(401).json({
+        msg: 'You are not logged in.',
+      });
+    }
   },
   logOut: (req, res) => {
     req.session.destroy(function(e){

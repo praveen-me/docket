@@ -47,9 +47,9 @@ module.exports = (passport) => {
       }
       const email = profile.emails[0].value
       User.findOne({ email }, (err, data) => {
-        console.log(data)
         if(!data) {
           const newUser = new User({
+            gId : profile.id,
             email: profile.emails[0].value,
             fullName: profile.displayName,
           })
@@ -60,10 +60,14 @@ module.exports = (passport) => {
             });
           })
         } else {
-          return done(null, {
-            ...userSession,
-            data
-          });
+          if(!data.gitId) {
+            return done(null, {
+              ...userSession,
+              data
+            });
+          } else {
+            return done(null, false)
+          }
         }
       })
      }
@@ -80,9 +84,9 @@ module.exports = (passport) => {
     }
     const email = profile.emails[0].value
     User.findOne({ email }, (err, data) => {
-      console.log(data)
       if(!data) {
         const newUser = new User({
+          gitId : profile.id,
           email: profile.emails[0].value,
           fullName: profile.displayName,
         })
@@ -93,10 +97,15 @@ module.exports = (passport) => {
           });
         })
       } else {
-        return done(null, {
-          ...userSession,
-          data
-        });
+        if(!data.gId) {
+          return done(null, {
+            ...userSession,
+            data
+          });
+        } else {
+          console.log("check")
+          return done(null, false)
+        }
       }
     })
   }

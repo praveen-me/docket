@@ -69,11 +69,19 @@ export function logIn(data, cb) {
 }
 
 export function setInitialUser(cb) {
-  return () => fetch('/api/isLoggedIn')
+  return (dispatch) => fetch('/api/isLoggedIn')
     .then((res) => {
       if (res.status === 200) {
         res.json()
           .then(data => cb(data));
+      } else {
+        res.json()
+          .then((resData) => {
+            return dispatch({
+              type: 'LOGIN_ERR',
+              errMsg: resData.msg,
+            });
+          });
       }
     });
 }
