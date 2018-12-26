@@ -1,6 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./../models/User');
-var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 
 module.exports = (passport) => {
   // serialize the user session
@@ -45,11 +46,10 @@ module.exports = (passport) => {
         token : accessToken
       }
       const email = profile.emails[0].value
-      User.findOne({ gID: profile.id }, (err, data) => {
+      User.findOne({ email }, (err, data) => {
         console.log(data)
         if(!data) {
           const newUser = new User({
-            gID : profile.id,
             email: profile.emails[0].value,
             fullName: profile.displayName,
           })
@@ -67,5 +67,38 @@ module.exports = (passport) => {
         }
       })
      }
-    ))
+    ));
+
+  passport.use(new GitHubStrategy({
+    clientID: 'a59fb1c7d55495eb4ad5',
+    clientSecret: '6ed3eae023c7b3241506b9aefef9ba3fde62bf05',
+    callbackURL: "http://localhost:8001/api/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    const userSession = {
+      token : accessToken
+    }
+    const email = profile.emails[0].value
+    User.findOne({ email }, (err, data) => {
+      console.log(data)
+      if(!data) {
+        const newUser = new User({
+          email: profile.emails[0].value,
+          fullName: profile.displayName,
+        })
+        newUser.save((err, userData) => {
+          return done(null, {
+            ...userSession,
+            data : userData
+          });
+        })
+      } else {
+        return done(null, {
+          ...userSession,
+          data
+        });
+      }
+    })
+  }
+  ))
 };

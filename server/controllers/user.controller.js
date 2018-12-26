@@ -64,4 +64,9 @@ module.exports = {
       });
     });
   },
+  callbackGoogle : passport.authenticate("google", {  failureRedirect: "/", session : true }),
+  function(req, res) {
+    console.log(req.session.cookie);
+    res.redirect('/');
+  }
 };

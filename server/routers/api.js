@@ -24,16 +24,21 @@ router.get('/login/google',
   passport.authenticate('google', { scope: ["profile", "email"] })
 )
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/", session : true }),
-  function(req, res) {
-    // req.session.token = req.user.token;
-    console.log(req.session.cookie);
-    res.redirect('/');
-  }
-);
+router.get("/google/callback", passport.authenticate("google", {  failureRedirect: "/", session : true }),
+function(req, res) {
+  console.log(req.session.cookie);
+  res.redirect('/');
+});
 
-// router.put('/todos/:id')
+router.get('/login/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+router.get('/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login',  session : true  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    // console.log(req.profile);
+    res.redirect('/');
+  });
 
 module.exports = router;

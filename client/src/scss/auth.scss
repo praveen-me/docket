@@ -64,10 +64,9 @@ button {
   text-decoration: none;
 }
 
-.login-google {
+.login-OAuth {
   button {
     font-size: 1.2rem;
-    background-color: #bf0505;
     color: #fff;
     padding: 0.5rem;
     width: 100%;
@@ -79,4 +78,12 @@ button {
       margin: 0 0.5rem;
     }
   }
+}
+
+.login-google {
+  background-color: #bf0505;
+}
+
+.login-github {
+  background-color: #413e3e;
 }
