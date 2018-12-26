@@ -5,16 +5,6 @@ import { logIn } from '../store/actions/auth.action';
 import Loader from './Loader';
 
 
-function globalSignIn(user)
-{
-  var profile = user.getBasicProfile();
-  user.profile = profile;
-  
-  console.log("GLOBAL", user);
-}
-
-window.globalSignIn = globalSignIn
-
 class LogIn extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +50,6 @@ class LogIn extends Component {
     }
   }
 
-
   handleGoogleLogin = e => {
     fetch(`/api/login/google`);
     
@@ -96,8 +85,12 @@ class LogIn extends Component {
               {/* <a href="#" className="form_link">Forget Password?</a> */}
             </div>
           </form>
-          <a href="http://localhost:8001/api/login/google">
-            <button>Login With Google</button>
+          <p className="center" style={{
+            fontSize : '1.3rem',
+            fontWeight : 300
+          }}>OR</p>
+          <a href="http://localhost:8001/api/login/google" className="login-google">
+            <button><i className="fab fa-google"></i>Login With Google</button>
           </a>
         </div>
       )

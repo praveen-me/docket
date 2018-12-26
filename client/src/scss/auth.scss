@@ -63,3 +63,20 @@ button {
 .form_link {
   text-decoration: none;
 }
+
+.login-google {
+  button {
+    font-size: 1.2rem;
+    background-color: #bf0505;
+    color: #fff;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    font-weight: 300;
+    i {
+      display: inline-block;
+      margin: 0 0.5rem;
+    }
+  }
+}
