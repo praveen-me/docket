@@ -14,7 +14,7 @@ module.exports = (passport) => {
   });
 
   /* 
-   * this middleware takes username and passpord and use LocalStartegy() after login 
+   * this middleware takes username and passport and use LocalStrategy() after login 
    * and then compare the username and password with db
    * and proceed request according to it
   */
@@ -103,7 +103,6 @@ module.exports = (passport) => {
             data
           });
         } else {
-          console.log("check")
           return done(null, false)
         }
       }

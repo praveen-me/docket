@@ -1,5 +1,4 @@
 export function signUp(data, cb) {
-  console.log(data);
   return (dispatch) => {
     fetch('/api/signUp', {
       method: 'POST',
@@ -9,11 +8,10 @@ export function signUp(data, cb) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           res.json()
             .then((resData) => {
               cb(true);
-              console.log(resData);
               return dispatch({
                 type: 'SIGNUP_SUCCESS',
                 data: resData.user,
@@ -23,7 +21,6 @@ export function signUp(data, cb) {
           res.json()
             .then((resData) => {
               cb(true);
-              console.log(resData);
               return dispatch({
                 type: 'SIGNUP_ERR',
                 errMsg: resData.msg,
@@ -48,6 +45,10 @@ export function logIn(data, cb) {
         if (res.status === 200) {
           res.json()
             .then((resData) => {
+              
+              // storing token in local storage
+              
+
               cb(true);
               return dispatch({
                 type: 'LOGIN_SUCCESS',

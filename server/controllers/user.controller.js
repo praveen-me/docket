@@ -12,7 +12,7 @@ module.exports = {
       if (!data) {
         return newUser.save((error, userData) => {
           if (err) throw err;
-          res.json({
+          res.status(201).json({
             user: userData,
           });
         });
@@ -36,6 +36,7 @@ module.exports = {
           if (e) throw err;
           return res.json({
             user: data,
+            token: jwt.sign({user: data}, 'secret')
           });
         });
       });
@@ -52,7 +53,7 @@ module.exports = {
           });
         }
         return res.json({
-          user: data,
+          user: data
         });
       });
     } else {
@@ -72,7 +73,6 @@ module.exports = {
   },
   callbackGoogle : passport.authenticate("google", {  failureRedirect: "/", session : true }),
   function(req, res) {
-    console.log(req.session.cookie);
     res.redirect('/');
   }
 };

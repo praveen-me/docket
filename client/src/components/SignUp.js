@@ -35,17 +35,17 @@ class SignUp extends Component {
     })
     
     if(navigator.onLine) {
-      this.props.dispatch(signUp(this.state.userCreds), (isSucced)=>{
+      this.props.dispatch(signUp(this.state.userCreds, (isSucced) => {
         if(isSucced) {
           this.setState({
             isLoading : false
           })
         }
-      });
+      }));
     } else {
       this.setState({
         isLoading : false,
-        msg : "Internet is not avialble."
+        msg : "Internet is not available."
       })
     }
   }
