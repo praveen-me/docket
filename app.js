@@ -10,12 +10,10 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('./webpack.config');
 const cors = require('cors');
 
-
 const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, './server/views'));
-
 
 // Connecting To Mongodb
 mongoose.connect('mongodb://localhost/docket', { useNewUrlParser: true }, (err) => {
@@ -54,10 +52,9 @@ require('./server/modules/passport')(passport);
 
 // Essential Middleware
 app.use(bodyParser.json());
-app.use('/api', require('./server/routers/api'));
-
 
 // Requiring routes
+app.use('/api', require('./server/routers/api'));
 app.use(require('./server/routers/index'));
 
 app.listen(8001, () => {

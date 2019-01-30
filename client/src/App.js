@@ -26,7 +26,6 @@ class App extends Component {
     }))
   }
 
-
   render() {
     console.log('check 2')
     return (

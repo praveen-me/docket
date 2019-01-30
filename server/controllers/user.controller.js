@@ -1,5 +1,6 @@
 const passport = require('passport');
 const User = require('./../models/User');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   signUp: (req, res) => {
@@ -17,7 +18,7 @@ module.exports = {
         });
       }
       return res.status(302).json({
-        msg: 'username is not avilable',
+        msg: 'username is not available',
       });
     });
   },
@@ -26,7 +27,7 @@ module.exports = {
       if (err) return next(err);
       if (!user) {
         return res.status(404).json({
-          msg: 'Acount not available. Please Sign Up.',
+          msg: 'Account not available. Please Sign Up.',
         });
       }
       return req.logIn(user, (error) => {
@@ -41,7 +42,6 @@ module.exports = {
     })(req, res, next);
   },
   isLoggedIn: (req, res) => {
-    console.log(req.user, "in is loggediN")
     if(req.user) {
       const {username, _id} = req.user;
       User.findOne({ _id: username ? req.user._id : req.user.data._id }, { password: 0 }, (err, data) => {
