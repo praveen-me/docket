@@ -3,8 +3,6 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const session = require("express-session");
-const MongoConnect = require("connect-mongo")(session);
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackConfig = require("./webpack.config");
@@ -42,24 +40,12 @@ if (process.env.NODE_ENV === "development") {
   );
 }
 
-app.use(
-  session({
-    secret: "docket session",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      maxAge: 360000
-    },
-    store: new MongoConnect({ url: "mongodb://localhost/docket-session" })
-  })
-);
 app.use(cors());
 app.options("*", cors());
 // Essential Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
-app.use(passport.session());
 require("./server/modules/passport")(passport);
 
 server.applyMiddleware({ app });

@@ -5,7 +5,7 @@ module.exports = {
   Query: {
     me() {
       return {
-        username: "mnjh"
+        username: ",mdkjhfg"
       };
     }
   },

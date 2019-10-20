@@ -1,57 +1,58 @@
 const initState = {
   currentUser: {},
-  errMsg: '',
-  successMsg: '',
-  currentTodos: [],
+  errMsg: "",
+  successMsg: null,
+  currentTodos: []
 };
 
 export default function rootReducer(state = initState, action) {
   switch (action.type) {
-    case 'SIGNUP_SUCCESS': {
+    case "SIGNUP_SUCCESS": {
       return {
         ...state,
-        errMsg: '',
-        successMsg: 'Signup Sucessfull',
+        errMsg: "",
+        successMsg: true
       };
     }
 
-    case 'SIGNUP_ERR': {
+    case "SIGNUP_ERR": {
       return {
         ...state,
-        successMsg: '',
-        errMsg: action.errMsg,
+        successMsg: "",
+        errMsg: action.errMsg
       };
     }
 
-    case 'LOGIN_SUCCESS': {
+    case "LOGIN_SUCCESS": {
       return {
         ...state,
-        errMsg: '',
-        currentUser: action.data,
+        errMsg: "",
+        currentUser: action.data
       };
     }
 
-    case 'LOGIN_ERR': {
+    case "LOGIN_ERR": {
       return {
         ...state,
-        successMsg: '',
-        errMsg: action.errMsg,
+        successMsg: "",
+        errMsg: action.errMsg
       };
     }
 
-    case 'SET_TODO' : {
+    case "SET_TODO": {
       return {
         ...state,
-        currentTodos : [...action.data.data]
+        currentTodos: [...action.data.data]
       };
     }
 
-    case 'LOGOUT_SUCCESS' : {
+    case "LOGOUT_SUCCESS": {
       return {
-        ...initState,
+        ...initState
       };
     }
 
-    default : return state;
+    default:
+      return state;
   }
 }

@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   gitId: { type: String, default: "" },
   gId: { type: String, default: "" },
-  fullName: { type: String, default: "" },
+  fullName: { type: String, default: "", required: true },
   todos: [
     {
       type: mongoose.Schema.Types.ObjectId,
