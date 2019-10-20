@@ -42,7 +42,7 @@ module.exports = gql`
   type Mutation {
     signin(input: SignInInput!): AuthUser!
     signup(input: SignUpInput!): User!
-    addTodo(input: String!): Todo!
+    addTodo(input: String!): Todo! @authenticated
   }
 
   type Query {

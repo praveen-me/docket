@@ -1,26 +1,18 @@
 const Todo = require("./../models/Todo");
 
 module.exports = {
-  insertTodo: async input => {
-    const todoData = req.body;
+  insertTodo: async (todo, user) => {
+    try {
+      const newTodo = new Todo({
+        user,
+        todo
+      });
 
-    // const newTodo = new Todo({
-    //   user: todoData.userId,
-    //   todo: todoData.todo,
-    // });
-
-    // newTodo.save(() => {
-    //   Todo.find({ user: todoData.userId }, (err, data) => {
-    //     res.json({
-    //       data,
-    //     });
-    //   });
-    // });
-
-    return {
-      todo: "apple",
-      done: false
-    };
+      const currentTodo = await newTodo.save();
+      return currentTodo;
+    } catch (e) {
+      throw new Error(e);
+    }
   },
   deleteTodo: (req, res) => {
     console.log("delete");

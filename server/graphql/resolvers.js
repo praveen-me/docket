@@ -18,8 +18,13 @@ module.exports = {
     signin: async (_, { input }, ctx) => {
       return await logIn(input, ctx);
     },
-    addTodo: async (_, { input }) => {
-      return await insertTodo(input);
+    addTodo: async (_, { input }, ctx) => {
+      const todo = await insertTodo(input, ctx.currentUser._id);
+
+      return {
+        ...todo,
+        user: ctx.currentUser
+      };
     }
   }
 };
