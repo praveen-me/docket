@@ -31,11 +31,12 @@ const LogIn = props => {
       }
     })
       .then(({ data }) => {
-        console.log(data);
-        console.log(data.signin.token);
+        // Set token to local storage
+        localStorage.setItem("authToken", data.signin.token);
+
         dispatch(logIn(data.signin.user));
+        props.history.push("/");
       })
-      .then(() => props.history.push("/"))
       .catch(e => {
         console.log(e);
       });
@@ -44,10 +45,6 @@ const LogIn = props => {
   const handleGoogleLogin = e => {
     fetch(`/api/login/google`);
   };
-
-  // const { currentUser, errMsg } = this.props;
-  // const { isLoading } = this.state;
-  // if (currentUser._id) return <Redirect to="/" />;
 
   return loading ? (
     <Loader />

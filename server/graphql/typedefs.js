@@ -4,10 +4,10 @@ const { gql } = require("apollo-server-express");
 //   defaultFormat: String = "mm dd yyyy"
 // ) on FIELD_DEFINITION
 
-// directive @authenticated on FIELD_DEFINITION
-
 // directive @authorized(role: Role!) on FIELD_DEFINITION
 module.exports = gql`
+  directive @authenticated on FIELD_DEFINITION | OBJECT
+
   type User {
     _id: ID!
     email: String!
@@ -42,9 +42,10 @@ module.exports = gql`
   type Mutation {
     signin(input: SignInInput!): AuthUser!
     signup(input: SignUpInput!): User!
+    addTodo(input: String!): Todo!
   }
 
   type Query {
-    me: User!
+    me: User! @authenticated
   }
 `;
