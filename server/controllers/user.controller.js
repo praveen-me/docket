@@ -1,78 +1,82 @@
-const passport = require('passport');
-const User = require('./../models/User');
-const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require("apollo-server-express");
+const passport = require("passport");
+const User = require("./../models/User");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
-  signUp: (req, res) => {
+  signUp: async input => {
+    const { username } = input;
+
     const newUser = new User({
-      ...req.body,
+      ...input
     });
 
-    User.findOne({ username: req.body.username }, (err, data) => {
-      if (!data) {
-        return newUser.save((error, userData) => {
-          if (err) throw err;
-          res.status(201).json({
-            user: userData,
-          });
-        });
-      }
-      return res.status(302).json({
-        msg: 'username is not available',
-      });
-    });
+    const isUserExists = await User.findOne({ username });
+    if (isUserExists) {
+      throw new AuthenticationError("Username is not available");
+    }
+
+    const user = await newUser.save();
+    return user;
   },
-  logIn: (req, res, next) => {
-    passport.authenticate('local', (err, user) => {
-      if (err) return next(err);
-      if (!user) {
-        return res.status(404).json({
-          msg: 'Account not available. Please Sign Up.',
-        });
-      }
-      return req.logIn(user, (error) => {
-        if (error) return next(error);
-        return User.findOne({ _id: user._id }, { password: 0 }, (e, data) => {
-          if (e) throw err;
-          return res.json({
-            user: data,
-            token: jwt.sign({user: data}, 'secret')
-          });
-        });
+  logIn: async (input, context) => {
+    try {
+      const { user } = await context.authenticate("graphql-local", {
+        ...input
       });
-    })(req, res, next);
+
+      await context.login(user);
+
+      const token = jwt.sign(
+        {
+          payload: user
+        },
+        process.env.JWT_SECRET
+      );
+
+      return { user, token };
+    } catch (e) {
+      throw new Error(e);
+    }
   },
   isLoggedIn: (req, res) => {
-    if(req.user) {
-      const {username, _id} = req.user;
-      User.findOne({ _id: username ? req.user._id : req.user.data._id }, { password: 0 }, (err, data) => {
-        if (err) throw err;
-        if(!data) {
-          return res.status(401).json({
-            msg: 'You are not logged in.',
+    if (req.user) {
+      const { username, _id } = req.user;
+      User.findOne(
+        { _id: username ? req.user._id : req.user.data._id },
+        { password: 0 },
+        (err, data) => {
+          if (err) throw err;
+          if (!data) {
+            return res.status(401).json({
+              msg: "You are not logged in."
+            });
+          }
+          return res.json({
+            user: data
           });
         }
-        return res.json({
-          user: data
-        });
-      });
+      );
     } else {
       return res.status(401).json({
-        msg: 'You are not logged in.',
+        msg: "You are not logged in."
       });
     }
   },
   logOut: (req, res) => {
-    req.session.destroy(function(e){
+    req.session.destroy(function(e) {
       req.logout();
       // res.redirect('/');
       res.status(200).json({
-        msg: 'Logout Completed',
+        msg: "Logout Completed"
       });
     });
   },
-  callbackGoogle : passport.authenticate("google", {  failureRedirect: "/", session : true }),
+  callbackGoogle: passport.authenticate("google", {
+    failureRedirect: "/",
+    session: true
+  }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect("/");
   }
 };

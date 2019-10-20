@@ -11,9 +11,9 @@ const webpackConfig = require("./webpack.config");
 const cors = require("cors");
 const server = require("./server/graphql/config");
 
-const app = express();
+require("dotenv").config();
 
-server.applyMiddleware({ app });
+const app = express();
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./server/views"));
@@ -55,13 +55,14 @@ app.use(
 );
 app.use(cors());
 app.options("*", cors());
+// Essential Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 require("./server/modules/passport")(passport);
 
-// Essential Middleware
-app.use(bodyParser.json());
+server.applyMiddleware({ app });
 
 // Requiring routes
 app.use("/api", require("./server/routers/api"));
