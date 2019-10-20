@@ -9,3 +9,20 @@ export const SignUpMutation = gql`
     }
   }
 `;
+
+export const SignInMutation = gql`
+  mutation SignIn($input: SignInInput!) {
+    signin(input: $input) {
+      token
+      user {
+        username
+        fullName
+        _id
+        todos {
+          todo
+          done
+        }
+      }
+    }
+  }
+`;

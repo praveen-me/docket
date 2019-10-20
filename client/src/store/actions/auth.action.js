@@ -7,37 +7,10 @@ export const signUp = data => dispatch => {
   return Promise.resolve(true);
 };
 
-export function logIn(data, cb) {
-  return dispatch => {
-    fetch("/api/logIn", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    }).then(res => {
-      if (res.status === 200) {
-        res.json().then(resData => {
-          // storing token in local storage
-
-          cb(true);
-          return dispatch({
-            type: "LOGIN_SUCCESS",
-            data: resData.user
-          });
-        });
-      } else {
-        res.json().then(resData => {
-          cb(true);
-          return dispatch({
-            type: "LOGIN_ERR",
-            errMsg: resData.msg
-          });
-        });
-      }
-    });
-  };
-}
+export const logIn = data => ({
+  type: "LOGIN_SUCCESS",
+  data
+});
 
 export function setInitialUser(cb) {
   return dispatch =>

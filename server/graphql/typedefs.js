@@ -9,6 +9,7 @@ const { gql } = require("apollo-server-express");
 // directive @authorized(role: Role!) on FIELD_DEFINITION
 module.exports = gql`
   type User {
+    _id: ID!
     email: String!
     username: String!
     todos: [Todo]!
