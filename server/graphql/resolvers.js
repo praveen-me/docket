@@ -1,7 +1,7 @@
 const userController = require("./../controllers/user.controller");
 const todoController = require("./../controllers/todo.controller");
 const { signUp, logIn, getUser } = userController;
-const { insertTodo, getAllTodos } = todoController;
+const { insertTodo, getAllTodos, deleteTodo } = todoController;
 
 module.exports = {
   Query: {
@@ -21,6 +21,12 @@ module.exports = {
     },
     addTodo: async (_, { input }, ctx) => {
       return await insertTodo(input, ctx.currentUser._id);
+    },
+    deleteTodo: async (_, { id }, ___) => {
+      return {
+        isDeleted: await deleteTodo(id),
+        _id: id
+      };
     }
   },
   Todo: {

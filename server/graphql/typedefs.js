@@ -40,10 +40,16 @@ module.exports = gql`
     fullName: String!
   }
 
+  type DeleteTodo {
+    isDeleted: Boolean
+    _id: ID!
+  }
+
   type Mutation {
     signin(input: SignInInput!): AuthUser!
     signup(input: SignUpInput!): User!
     addTodo(input: String!): Todo! @authenticated
+    deleteTodo(id: ID!): DeleteTodo! @authenticated
   }
 
   type Query {

@@ -14,16 +14,14 @@ module.exports = {
       throw new Error(e);
     }
   },
-  deleteTodo: (req, res) => {
-    console.log("delete");
-    const { id } = req.params;
-    Todo.remove({ _id: id }, () => {
-      Todo.find({ user: req.user.data._id }, (err, data) => {
-        res.json({
-          data
-        });
-      });
-    });
+  deleteTodo: async _id => {
+    try {
+      const { deletedCount } = await Todo.deleteOne({ _id });
+
+      return Boolean(deletedCount);
+    } catch (e) {
+      throw new Error(e);
+    }
   },
   getAllTodos: async user => {
     try {

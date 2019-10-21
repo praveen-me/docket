@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Redirect } from "react-router-dom";
 import Loader from "./Loader";
-import { addTodoMutation } from "../graphql/todo-mutations";
+import { addTodoMutation, DELETE_TODO } from "../graphql/todo-mutations";
 import { GET_ALL_TODOS } from "../graphql/todo-queries";
 
 const Dashboard = props => {
@@ -17,13 +17,31 @@ const Dashboard = props => {
       }
     ) {
       const { todos } = cache.readQuery({ query: GET_ALL_TODOS });
-      console.log(addTodo, "todo in cache");
       cache.writeQuery({
         query: GET_ALL_TODOS,
         data: { todos: [...todos, addTodo] }
       });
     }
   });
+
+  const [deleteTodo] = useMutation(DELETE_TODO, {
+    update(
+      cache,
+      {
+        data: { deleteTodo }
+      }
+    ) {
+      const { todos } = cache.readQuery({ query: GET_ALL_TODOS });
+
+      if (deleteTodo._id) {
+        cache.writeQuery({
+          query: GET_ALL_TODOS,
+          data: { todos: todos.filter(todo => todo._id !== deleteTodo._id) }
+        });
+      }
+    }
+  });
+
   const rgba = useRef("");
 
   const handleChange = ({ target: { value } }) => {
@@ -39,18 +57,12 @@ const Dashboard = props => {
     });
   };
 
-  const handleDelete = e => {
-    const deleteId = e.target.parentElement.id;
-    fetch(`/api/todos/${deleteId}`, {
-      method: "DELETE"
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.props.dispatch({
-          type: "SET_TODO",
-          data
-        });
-      });
+  const handleDelete = ({ target: { parentElement } }) => {
+    deleteTodo({
+      variables: {
+        id: parentElement.id
+      }
+    });
   };
 
   const handleDone = e => {};
