@@ -12,18 +12,7 @@ export const logIn = data => ({
   data
 });
 
-export function setInitialUser(cb) {
-  return dispatch =>
-    fetch("/api/isLoggedIn").then(res => {
-      if (res.status === 200) {
-        res.json().then(data => cb(data));
-      } else {
-        res.json().then(resData => {
-          return dispatch({
-            type: "LOGIN_ERR",
-            errMsg: resData.msg
-          });
-        });
-      }
-    });
-}
+export const setInitialUser = user => ({
+  type: "LOGIN_SUCCESS",
+  data: user
+});

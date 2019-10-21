@@ -6,7 +6,7 @@ const { insertTodo, getAllTodos } = todoController;
 module.exports = {
   Query: {
     me: async (_, __, ctx) => {
-      return await getUser(root.user);
+      return await getUser(ctx.currentUser._id);
     },
     todos(_, __, ctx) {
       return getAllTodos(ctx.currentUser._id);
