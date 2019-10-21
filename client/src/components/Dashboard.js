@@ -1,62 +1,45 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Redirect } from "react-router-dom";
-import { setTodos, setTodo } from "../store/actions/todo.action";
 import Loader from "./Loader";
 import { addTodoMutation } from "../graphql/todo-mutations";
+import { GET_ALL_TODOS } from "../graphql/todo-queries";
 
 const Dashboard = props => {
   const [todoVal, setTodoVal] = useState("");
-  const [addTodo, { error, loading, data }] = useMutation(addTodoMutation);
-  const rgba = useRef();
+  const { data: allTodos, loading } = useQuery(GET_ALL_TODOS);
+  const [addTodo, { error, data }] = useMutation(addTodoMutation, {
+    update(
+      cache,
+      {
+        data: { addTodo }
+      }
+    ) {
+      const { todos } = cache.readQuery({ query: GET_ALL_TODOS });
+      console.log(addTodo, "todo in cache");
+      cache.writeQuery({
+        query: GET_ALL_TODOS,
+        data: { todos: [...todos, addTodo] }
+      });
+    }
+  });
+  const rgba = useRef("");
 
   const handleChange = ({ target: { value } }) => {
     setTodoVal(value);
   };
 
-  // componentDidMount() {
-  //   this.setState({
-  //     isLoading : true
-  //   })
-  //   this.props.dispatch(setTodos((isData) => {
-  //     if(isData) {
-  //       this.setState({
-  //         isLoading : false
-  //       })
-  //     }
-  //   }))
-  // }
-
   const handleSubmit = e => {
     e.preventDefault();
-
-    // this.props.dispatch(
-    //   setTodo(
-    //     {
-    //       todo: this.state.todo,
-    //       userId: currentUser._id
-    //     },
-    //     isSucced => {
-    //       if (isSucced) {
-    //         this.setState({
-    //           isLoading: false
-    //         });
-    //         document.getElementById("todoVal").value = "";
-    //       }
-    //     }
-    //   )
-    // );
     addTodo({
       variables: {
         input: todoVal
       }
-    }).then(({ data }) => {
-      console.log(data.addTodo);
     });
   };
 
-  const hanldeDelete = e => {
+  const handleDelete = e => {
     const deleteId = e.target.parentElement.id;
     fetch(`/api/todos/${deleteId}`, {
       method: "DELETE"
@@ -72,8 +55,7 @@ const Dashboard = props => {
 
   const handleDone = e => {};
 
-  // const { currentUser, currentTodos } = this.props;
-  // const { isLoading } = this.state;
+  const { currentUser } = props;
   // if (!currentUser._id) return <Redirect to="/login" />;
 
   return (
@@ -83,33 +65,33 @@ const Dashboard = props => {
         <input type="text" name="" id="todoVal" onChange={handleChange} />
         <button type="submit">Add Todo</button>
       </form>
-      {true ? (
+      {loading ? (
         <Loader />
       ) : (
-        currentTodos.length > 0 &&
-        currentTodos.map(todo => (
+        allTodos.todos &&
+        allTodos.todos.map(todo => (
           <div
             className="todo-block"
             id={todo._id}
             key={todo._id}
             style={{
               background: (() => {
-                this.rgba = `rgb(${Math.floor(
+                rgba.current = `rgb(${Math.floor(
                   Math.random() * 240
                 )},${Math.floor(Math.random() * 240)},${Math.floor(
                   Math.random() * 240
                 )})`;
-                return this.rgba;
+                return rgba.current;
               })(),
-              boxShadow: `0px 1px 11px 3px ${this.rgba}`
+              boxShadow: `0px 1px 11px 3px ${rgba.currentTodos}`
             }}>
             <input
               type="checkbox"
               className="todo_done"
-              onChange={this.handleDone}
+              onChange={handleDone}
             />
             <p className="todo-name">{todo.todo}</p>
-            <button className="todo-delete" onClick={this.hanldeDelete}>
+            <button className="todo-delete" onClick={handleDelete}>
               x
             </button>
           </div>

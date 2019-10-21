@@ -20,6 +20,7 @@ module.exports = gql`
     user: User!
     todo: String!
     done: Boolean!
+    _id: ID!
   }
 
   type AuthUser {

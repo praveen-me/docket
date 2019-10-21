@@ -1,11 +1,7 @@
-export const signUp = data => dispatch => {
-  dispatch({
-    type: "SIGNUP_SUCCESS",
-    data
-  });
-
-  return Promise.resolve(true);
-};
+export const signUp = data => ({
+  type: "SIGNUP_SUCCESS",
+  data
+});
 
 export const logIn = data => ({
   type: "LOGIN_SUCCESS",

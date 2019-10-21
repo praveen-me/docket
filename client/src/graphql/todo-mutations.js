@@ -5,6 +5,7 @@ export const addTodoMutation = gql`
     addTodo(input: $input) {
       todo
       done
+      _id
     }
   }
 `;

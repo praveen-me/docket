@@ -32,9 +32,7 @@ const SignUp = props => {
       }
     })
       .then(data => {
-        return dispatch(signUp());
-      })
-      .then(() => {
+        dispatch(signUp());
         props.history.push("/login");
       })
       .catch(e => console.log(e));
