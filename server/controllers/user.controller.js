@@ -4,6 +4,18 @@ const User = require("./../models/User");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  getUser: async _id => {
+    try {
+      const user = await User.findOne({ _id });
+      if (!user) {
+        throw new Error("You are not authenticated");
+      }
+
+      return user;
+    } catch (e) {
+      throw new Error(e);
+    }
+  },
   signUp: async input => {
     const { username } = input;
 

@@ -25,15 +25,13 @@ module.exports = {
       });
     });
   },
-  getAllTodos: (req, res) => {
-    const { username, _id } = req.user;
-    Todo.find(
-      { user: username ? req.user._id : req.user.data._id },
-      (err, data) => {
-        res.json({
-          data
-        });
-      }
-    );
+  getAllTodos: async user => {
+    try {
+      const todos = await Todo.find({ user });
+
+      return todos;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 };
