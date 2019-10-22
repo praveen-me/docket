@@ -12,3 +12,7 @@ export const setInitialUser = user => ({
   type: "LOGIN_SUCCESS",
   data: user
 });
+
+export const logOut = () => ({
+  type: "LOGOUT"
+});

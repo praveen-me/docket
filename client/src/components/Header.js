@@ -1,57 +1,46 @@
-import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import { setInitialUser } from '../store/actions/auth.action';
+import React from "react";
+import { NavLink, withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logOut } from "../store/actions/auth.action";
 
-class Header extends Component {
-  handleLogOut = e => {
-    fetch(`/api/logout`)
-    .then(res => res.json())
-    .then(data => {
-      this.props.dispatch({
-        type : "LOGOUT_SUCCESS"
-      })
-    })
-  }
+const Header = props => {
+  const { currentUser } = useSelector(state => state);
+  const dispatch = useDispatch();
 
-  
-  render() {
-    const {currentUser} = this.props;
+  const handleLogOut = e => {
+    dispatch(logOut());
+    localStorage.removeItem("authToken");
+    props.history.push("/login");
+  };
 
-    return (
-      <header className="">
-        <div className="shadow wrapper">
-          <Link to="/"><h1>Docket</h1></Link>
-          {
-            !currentUser._id  ? (
-              <div className="auth_links-block">
-                <Link to="/login" className="auth_link">Login</Link>
-                <Link to="/signup" className="auth_link">Sign Up</Link>
-              </div>
-            ) : (
-              <div className="auth_links-block">
-                <span className="user-name">Welcome {currentUser.fullName.split(' ')[0]}</span>
-                <a href="#" className="auth_link" onClick={this.handleLogOut}>Log out</a>
-              </div>
-            )
-          }
-        </div>
-      </header>
-    );
-  }
-}
+  return (
+    <header className="">
+      <div className="shadow wrapper">
+        <NavLink to="/">
+          <h1>Docket</h1>
+        </NavLink>
+        {!currentUser._id ? (
+          <div className="auth_links-block">
+            <NavLink to="/login" className="auth_link">
+              Login
+            </NavLink>
+            <NavLink to="/signup" className="auth_link">
+              Sign Up
+            </NavLink>
+          </div>
+        ) : (
+          <div className="auth_links-block">
+            <span className="user-name">
+              Welcome {currentUser.fullName.split(" ")[0]}
+            </span>
+            <a href="#" className="auth_link" onClick={handleLogOut}>
+              Log out
+            </a>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
 
-function mapStateToProps(state) {
-  return {
-    currentUser : state.currentUser
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    setInitialUser : () => dispatch(setInitialUser())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(Header);

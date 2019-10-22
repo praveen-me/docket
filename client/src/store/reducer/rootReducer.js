@@ -46,7 +46,7 @@ export default function rootReducer(state = initState, action) {
       };
     }
 
-    case "LOGOUT_SUCCESS": {
+    case "LOGOUT": {
       return {
         ...initState
       };
