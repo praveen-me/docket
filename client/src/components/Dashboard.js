@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Redirect } from "react-router-dom";
 import Loader from "./Loader";
-import { addTodoMutation, DELETE_TODO } from "../graphql/todo-mutations";
+import {
+  addTodoMutation,
+  DELETE_TODO,
+  TOGGLE_TODO_DONE
+} from "../graphql/todo-mutations";
 import { GET_ALL_TODOS } from "../graphql/todo-queries";
 
 const Dashboard = props => {
@@ -42,6 +46,8 @@ const Dashboard = props => {
     }
   });
 
+  const [toggleTodoDone] = useMutation(TOGGLE_TODO_DONE);
+
   const rgba = useRef("");
 
   const handleChange = ({ target: { value } }) => {
@@ -65,7 +71,16 @@ const Dashboard = props => {
     });
   };
 
-  const handleDone = e => {};
+  const handleDone = ({ target: { parentElement } }, lastValue) => {
+    toggleTodoDone({
+      variables: {
+        input: {
+          id: parentElement.id,
+          lastValue
+        }
+      }
+    });
+  };
 
   const { currentUser } = props;
   // if (!currentUser._id) return <Redirect to="/login" />;
@@ -100,7 +115,8 @@ const Dashboard = props => {
             <input
               type="checkbox"
               className="todo_done"
-              onChange={handleDone}
+              onChange={e => handleDone(e, todo.done)}
+              checked={todo.done}
             />
             <p className="todo-name">{todo.todo}</p>
             <button className="todo-delete" onClick={handleDelete}>

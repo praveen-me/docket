@@ -31,5 +31,18 @@ module.exports = {
     } catch (e) {
       throw new Error(e);
     }
+  },
+  changeTodoDone: async (_id, prevValue) => {
+    try {
+      let todo;
+
+      await Todo.update({ _id }, { $set: { done: !prevValue } });
+
+      todo = await Todo.findOne({ _id });
+
+      return todo;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 };

@@ -45,11 +45,17 @@ module.exports = gql`
     _id: ID!
   }
 
+  input ToggleTodoDoneInput {
+    id: ID!
+    lastValue: Boolean!
+  }
+
   type Mutation {
     signin(input: SignInInput!): AuthUser!
     signup(input: SignUpInput!): User!
     addTodo(input: String!): Todo! @authenticated
     deleteTodo(id: ID!): DeleteTodo! @authenticated
+    toggleTodoDone(input: ToggleTodoDoneInput!): Todo! @authenticated
   }
 
   type Query {

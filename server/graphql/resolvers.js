@@ -1,7 +1,7 @@
 const userController = require("./../controllers/user.controller");
 const todoController = require("./../controllers/todo.controller");
 const { signUp, logIn, getUser } = userController;
-const { insertTodo, getAllTodos, deleteTodo } = todoController;
+const { insertTodo, getAllTodos, deleteTodo, changeTodoDone } = todoController;
 
 module.exports = {
   Query: {
@@ -27,6 +27,9 @@ module.exports = {
         isDeleted: await deleteTodo(id),
         _id: id
       };
+    },
+    toggleTodoDone: async (_, { input: { id, lastValue } }, ___) => {
+      return await changeTodoDone(id, lastValue);
     }
   },
   Todo: {
