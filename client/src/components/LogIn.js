@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useMutation } from "@apollo/react-hooks";
 import { logIn } from "../store/actions/auth.action";
 import Loader from "./Loader";
 import { SignInMutation } from "../graphql/user-mutations";
+import AuthHOC from "../AuthHOC";
 
 const LogIn = props => {
   const [userCredentials, setUserCredentials] = useState({
@@ -103,12 +103,4 @@ const LogIn = props => {
     </div>
   );
 };
-
-// function mapStateToProps(state) {
-//   return {
-//     errMsg : state.errMsg,
-//     currentUser : state.currentUser
-//   }
-// }
-
 export default LogIn;
