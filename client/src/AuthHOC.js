@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
-const AuthHOC = mainComponent => {
-
+const AuthHOC = MainComponent => {
   class WrappedComponent extends Component {
     render() {
-      console.log(this.props.currentUser._id);
-      return this.props.currentUser._id ? (
-        <mainComponent />
+      return !this.props.currentUser._id ? (
+        <MainComponent {...this.props} />
       ) : (
         <Redirect to="/" />
       );
@@ -18,7 +16,7 @@ const AuthHOC = mainComponent => {
     return { currentUser };
   }
 
-  return connect(mapStateToProps)(WrappedComponent);
+  return withRouter(connect(mapStateToProps)(WrappedComponent));
 };
 
 export default AuthHOC;

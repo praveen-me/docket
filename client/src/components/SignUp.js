@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../store/actions/auth.action";
 import Loader from "./Loader";
 import { SignUpMutation } from "../graphql/user-mutations";
+import AuthHOC from "../AuthHOC";
 
 const SignUp = props => {
   const [userCredentials, setUserCredentials] = useState({
@@ -86,4 +87,4 @@ const SignUp = props => {
   );
 };
 
-export default SignUp;
+export default AuthHOC(SignUp);

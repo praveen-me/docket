@@ -103,4 +103,4 @@ const LogIn = props => {
     </div>
   );
 };
-export default LogIn;
+export default AuthHOC(LogIn);
