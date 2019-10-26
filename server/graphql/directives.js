@@ -16,10 +16,6 @@ class AuthenticationDirective extends SchemaDirectiveVisitor {
       return resolve(root, args, ctx, info);
     };
   }
-
-  visitObject(type) {}
-
-  authenticate(objectType) {}
 }
 
 module.exports = {

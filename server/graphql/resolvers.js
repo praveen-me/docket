@@ -6,6 +6,9 @@ const { insertTodo, getAllTodos, deleteTodo, changeTodoDone } = todoController;
 module.exports = {
   Query: {
     me: async (_, __, ctx) => {
+      if (!ctx.currentUser) {
+        throw new Error("Token is wrong");
+      }
       return await getUser(ctx.currentUser._id);
     },
     todos(_, __, ctx) {

@@ -1,12 +1,7 @@
 const { gql } = require("apollo-server-express");
-// const gql = require("graphql-tag");
-// directive @formatDate(
-//   defaultFormat: String = "mm dd yyyy"
-// ) on FIELD_DEFINITION
 
-// directive @authorized(role: Role!) on FIELD_DEFINITION
 module.exports = gql`
-  directive @authenticated on FIELD_DEFINITION | OBJECT
+  directive @authenticated on FIELD_DEFINITION
 
   type User {
     _id: ID!

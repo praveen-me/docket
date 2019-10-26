@@ -16,6 +16,12 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./server/views"));
 
+if (process.env.NODE_ENV === "production") {
+  app.use("/dist", express.static(path.join(__dirname, "dist/")));
+} else {
+  app.use("/static", express.static(path.join(__dirname, "static/")));
+}
+
 // Connecting To Mongodb
 mongoose.connect(
   "mongodb://localhost/docket",

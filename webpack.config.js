@@ -5,7 +5,6 @@ var path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const { NODE_ENV } = process.env;
-console.log(NODE_ENV);
 module.exports = {
   mode: NODE_ENV,
   devtool: "inline-source-map",
