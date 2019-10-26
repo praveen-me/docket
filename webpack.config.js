@@ -8,7 +8,7 @@ const { NODE_ENV } = process.env;
 module.exports = {
   mode: NODE_ENV,
   devtool: "inline-source-map",
-  entry: ["./client/src/index.js"],
+  entry: "./client/src/index.js",
   module: {
     rules: [
       {
@@ -41,13 +41,9 @@ module.exports = {
       }
     ]
   },
-  devServer: {
-    contentBase: path.join(__dirname, "app.js"),
-    compress: true,
-    port: 3001
-  },
   output: {
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js",
     path: __dirname + "/dist/",
     publicPath: NODE_ENV !== "production" ? "/static/" : "/dist/"
   },

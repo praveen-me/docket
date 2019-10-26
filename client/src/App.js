@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./scss/app.scss";
 import Header from "./components/Header";
-import Dashboard from "./components/Dashboard";
-import LogIn from "./components/LogIn";
-import SignUp from "./components/SignUp";
-import { useDispatch, connect } from "react-redux";
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const LogIn = lazy(() => import("./components/LogIn"));
+const SignUp = lazy(() => import("./components/SignUp"));
+import { useDispatch } from "react-redux";
 import { setInitialUser } from "./store/actions/auth.action";
 import client from "./graphql/config";
 import { getUser } from "./graphql/user-queries";
@@ -41,11 +41,13 @@ const App = () => {
     <Router>
       <>
         <Header />
-        <Switch>
-          <AuthRoute path="/" exact component={Dashboard} />
-          <Route path="/login" component={LogIn} />
-          <Route path="/signup" component={SignUp} />
-        </Switch>
+        <Suspense fallback={<Loader />}>
+          <Switch>
+            <AuthRoute path="/" exact component={Dashboard} />
+            <Route path="/login" component={LogIn} />
+            <Route path="/signup" component={SignUp} />
+          </Switch>
+        </Suspense>
       </>
     </Router>
   );
