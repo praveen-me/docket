@@ -68,39 +68,12 @@ const LogIn = props => {
           onChange={handleChange}
           required
         />
-        {/* {errMsg ? <p className="center warning-msg">{errMsg}</p> : ""} */}
         <button className="form_btn utils_style">Signin</button>
         <div className="center">
           {/* <a href="#" className="form_link">Forget Password?</a> */}
         </div>
       </form>
-      <p
-        className="center"
-        style={{
-          fontSize: "1.3rem",
-          fontWeight: 300
-        }}>
-        OR
-      </p>
-      <a href="http://localhost:8001/api/login/google" className="login-OAuth">
-        <button className="login-google">
-          <i className="fab fa-google"></i>Login With Google
-        </button>
-      </a>
-      <p
-        className="center"
-        style={{
-          fontSize: "1.3rem",
-          fontWeight: 300
-        }}>
-        OR
-      </p>
-      <a href="http://localhost:8001/api/login/github" className="login-OAuth">
-        <button className="login-github">
-          <i className="fab fa-github"></i>Login With Github
-        </button>
-      </a>
     </div>
   );
 };
-export default AuthHOC(LogIn);
+export default LogIn;
