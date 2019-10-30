@@ -11,6 +11,7 @@ import client from "./graphql/config";
 import { getUser } from "./graphql/user-queries";
 import AuthRoute from "./AuthRoute";
 import Loader from "./components/Loader";
+import Error from "./components/Error";
 
 const token = localStorage.getItem("authToken");
 
@@ -39,7 +40,7 @@ const App = () => {
     <Loader />
   ) : (
     <Router>
-      <>
+      <Error>
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
@@ -48,7 +49,7 @@ const App = () => {
             <Route path="/signup" component={SignUp} />
           </Switch>
         </Suspense>
-      </>
+      </Error>
     </Router>
   );
 };

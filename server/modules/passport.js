@@ -1,7 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
 const User = require("./../models/User");
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
-const GitHubStrategy = require("passport-github2").Strategy;
 
 const { GraphQLLocalStrategy } = require("graphql-passport");
 
