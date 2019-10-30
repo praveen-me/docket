@@ -25,7 +25,7 @@ module.exports = {
 
     const isUserExists = await User.findOne({ username });
     if (isUserExists) {
-      throw new AuthenticationError("Username is not available");
+      throw new AuthenticationError("Username Not Available !!");
     }
 
     const user = await newUser.save();

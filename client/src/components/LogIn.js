@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMutation } from "@apollo/react-hooks";
 import { logIn } from "../store/actions/auth.action";
-import Loader from "./Loader";
 import { SignInMutation } from "../graphql/user-mutations";
 import AuthHOC from "../AuthHOC";
 import SmallLoader from "./SmallLoder";
+import AuthError from "./Error/AuthError";
+import Input from "./From/Input";
 
 const LogIn = props => {
   const [showError, setShowErr] = useState(false);
@@ -47,21 +48,17 @@ const LogIn = props => {
     <div className="form_container SignUp">
       <h1 className="form_head">LOG IN TO YOUR ACCOUNT</h1>
       <form className="form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
-          className="form_field utils_style"
           placeholder="Username"
           name="username"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
-        <input
-          type="text"
-          className="form_field utils_style"
+        <Input
+          type="password"
           placeholder="Password"
           name="password"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
         <button className="form_btn utils_style">
           {loading ? <SmallLoader /> : "Signin"}
@@ -69,18 +66,11 @@ const LogIn = props => {
         {showError &&
           error &&
           error.graphQLErrors.map(({ message }) => (
-            <div className="error">
-              <p key={message} className="center">
-                {message}
-              </p>
-              <button
-                onClick={e => {
-                  e.preventDefault();
-                  setShowErr(false);
-                }}>
-                x
-              </button>
-            </div>
+            <AuthError
+              key={message}
+              message={message}
+              removeError={setShowErr}
+            />
           ))}
         <div className="center">
           {/* <a href="#" className="form_link">Forget Password?</a> */}

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signUp } from "../store/actions/auth.action";
-import Loader from "./Loader";
 import { SignUpMutation } from "../graphql/user-mutations";
 import AuthHOC from "../AuthHOC";
+import SmallLoader from "./SmallLoder";
+import AuthError from "./Error/AuthError";
+import Input from "./From/Input";
 
 const SignUp = props => {
+  const [showError, setShowErr] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
     username: "",
     email: "",
@@ -15,7 +18,7 @@ const SignUp = props => {
     password: ""
   });
   const dispatch = useDispatch();
-  const [signUpMutation, { loading }] = useMutation(SignUpMutation);
+  const [signUpMutation, { loading, error }] = useMutation(SignUpMutation);
 
   const handleChange = e => {
     setUserCredentials({
@@ -36,49 +39,49 @@ const SignUp = props => {
         dispatch(signUp());
         props.history.push("/login");
       })
-      .catch(e => console.log(e));
+      .catch(e => setShowErr(true));
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <div className="form_container SignUp">
       <h1 className="form_head">SignUp</h1>
       <form className="form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
-          className="form_field utils_style"
           placeholder="Full Name"
           name="fullName"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
-        <input
-          type="text"
-          className="form_field utils_style"
+        <Input
+          type="email"
           placeholder="Email"
           name="email"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
-        <input
+        <Input
           type="text"
-          className="form_field utils_style"
           placeholder="Username"
           name="username"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
-        <input
-          type="text"
-          className="form_field utils_style"
+        <Input
+          type="password"
           placeholder="Password"
           name="password"
-          onChange={handleChange}
-          required
+          handleChange={handleChange}
         />
-        {/* {errMsg ? <p className="center warning-msg">{errMsg}</p> : ""} */}
-        <button className="form_btn utils_style">Signup</button>
+        <button className="form_btn utils_style">
+          {loading ? <SmallLoader /> : "SignUp"}
+        </button>
+        {showError &&
+          error &&
+          error.graphQLErrors.map(({ message }) => (
+            <AuthError
+              key={message}
+              message={message}
+              removeError={setShowErr}
+            />
+          ))}
         <div className="center">
           <Link to="/login">Login</Link>
         </div>
