@@ -12,12 +12,11 @@ class Error extends Component {
     };
   }
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
+    this.setState({
+      hasError: true
+    });
+    console.log(error, errorInfo, "here");
   }
 
   render() {

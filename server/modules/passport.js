@@ -20,23 +20,22 @@ module.exports = passport => {
    */
   passport.use(
     new GraphQLLocalStrategy(async (username, password, done) => {
-      try {
-        const user = await User.findOne({ username });
+      let error = null;
+      const user = await User.findOne({ username });
 
-        if (!user) {
-          throw new AuthenticationError("Incorrect username");
-        }
+      if (user === null) {
+        error = new AuthenticationError("Incorrect Username!");
+      }
 
+      if (user) {
         const isValidatePassword = await user.validPassword(password);
 
         if (!isValidatePassword) {
-          throw new AuthenticationError("Password is wrong");
+          error = new AuthenticationError("Wrong Password!");
         }
-
-        done(null, user);
-      } catch (e) {
-        throw new Error(err);
       }
+
+      done(error, user);
     })
   );
 };

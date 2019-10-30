@@ -5,11 +5,14 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import client from "./graphql/config";
+import Error from "./components/Error";
 
 ReactDOM.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
-      <App />
+      <Error>
+        <App />
+      </Error>
     </ApolloProvider>
   </Provider>,
   document.getElementById("root")

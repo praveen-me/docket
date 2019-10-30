@@ -1,8 +1,7 @@
 const initState = {
   currentUser: {},
   errMsg: "",
-  successMsg: null,
-  currentTodos: []
+  successMsg: null
 };
 
 export default function rootReducer(state = initState, action) {
@@ -36,13 +35,6 @@ export default function rootReducer(state = initState, action) {
         ...state,
         successMsg: "",
         errMsg: action.errMsg
-      };
-    }
-
-    case "SET_TODO": {
-      return {
-        ...state,
-        currentTodos: [...action.data.data]
       };
     }
 

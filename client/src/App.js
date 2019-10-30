@@ -11,7 +11,6 @@ import client from "./graphql/config";
 import { getUser } from "./graphql/user-queries";
 import AuthRoute from "./AuthRoute";
 import Loader from "./components/Loader";
-import Error from "./components/Error";
 
 const token = localStorage.getItem("authToken");
 
@@ -19,7 +18,15 @@ const App = () => {
   const [loading, setLoading] = useState(token ? true : false);
   const dispatch = useDispatch();
 
+  window.addEventListener("offline", () => {
+    throw new Error("Offline");
+  });
+
   useEffect(() => {
+    if (!navigator.onLine) {
+      throw new Error("Offline");
+    }
+
     if (token) {
       (async () => {
         try {
@@ -36,11 +43,12 @@ const App = () => {
     }
   }, []);
 
+  // throw new Error("bgh");
   return loading ? (
     <Loader />
   ) : (
     <Router>
-      <Error>
+      <>
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
@@ -49,7 +57,7 @@ const App = () => {
             <Route path="/signup" component={SignUp} />
           </Switch>
         </Suspense>
-      </Error>
+      </>
     </Router>
   );
 };

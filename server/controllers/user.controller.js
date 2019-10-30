@@ -48,7 +48,7 @@ module.exports = {
 
       return { user, token };
     } catch (e) {
-      throw new Error(e);
+      throw e;
     }
   },
   isLoggedIn: (req, res) => {

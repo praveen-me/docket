@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { Redirect } from "react-router-dom";
 import Loader from "./Loader";
 import {
   addTodoMutation,
@@ -81,9 +80,6 @@ const Dashboard = props => {
       }
     });
   };
-
-  const { currentUser } = props;
-  // if (!currentUser._id) return <Redirect to="/login" />;
 
   return (
     <main className="wrapper">
