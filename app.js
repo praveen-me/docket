@@ -3,11 +3,9 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const webpack = require("webpack");
-const webpackDevMiddleware = require("webpack-dev-middleware");
-const webpackConfig = require("./webpack.config");
 const cors = require("cors");
 const server = require("./server/graphql/config");
+const webpackSetup = require("./webpack-setup");
 
 require("dotenv").config();
 
@@ -20,6 +18,7 @@ if (process.env.NODE_ENV === "production") {
   app.use("/dist", express.static(path.join(__dirname, "dist/")));
 } else {
   app.use("/static", express.static(path.join(__dirname, "static/")));
+  webpackSetup(app);
 }
 
 // Connecting To Mongodb
@@ -31,20 +30,6 @@ mongoose.connect(
     console.log("Connected to mongodb");
   }
 );
-
-// Webpack config
-if (process.env.NODE_ENV === "development") {
-  console.log("in webpack hot middleware");
-
-  const compiler = webpack(webpackConfig);
-
-  app.use(
-    webpackDevMiddleware(compiler, {
-      noInfo: true,
-      publicPath: webpackConfig.output.publicPath
-    })
-  );
-}
 
 app.use(cors());
 app.options("*", cors());

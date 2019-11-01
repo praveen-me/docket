@@ -7,7 +7,7 @@ import { SignUpMutation } from "../graphql/user-mutations";
 import AuthHOC from "../AuthHOC";
 import SmallLoader from "./SmallLoder";
 import AuthError from "./Error/AuthError";
-import Input from "./From/Input";
+import Input from "./Form/Input";
 
 const SignUp = props => {
   const [showError, setShowErr] = useState(false);

@@ -17,3 +17,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+// For hot module reload
+if (module.hot) {
+  module.hot.accept();
+}

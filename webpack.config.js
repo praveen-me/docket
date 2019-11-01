@@ -2,9 +2,8 @@
 var webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const { NODE_ENV } = process.env;
-module.exports = {
-  mode: NODE_ENV,
+module.exports = ({ mode } = { mode: "production" }) => ({
+  mode,
   devtool: "inline-source-map",
   entry: "./client/src/index.js",
   module: {
@@ -43,7 +42,7 @@ module.exports = {
     filename: "[name].bundle.js",
     chunkFilename: "[name].bundle.js",
     path: __dirname + "/dist/",
-    publicPath: NODE_ENV !== "production" ? "/static/" : "/dist/"
+    publicPath: mode !== "production" ? "/static/" : "/dist/"
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -55,5 +54,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "bundle.css"
     }),
+    new webpack.ProgressPlugin()
   ]
-};
+});
