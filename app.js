@@ -57,7 +57,6 @@ require("./server/modules/passport")(passport);
 server.applyMiddleware({ app });
 
 // Requiring routes
-app.use("/api", require("./server/routers/api"));
 app.use(require("./server/routers/index"));
 
 app.listen(8001, () => {

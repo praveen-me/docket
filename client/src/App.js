@@ -43,7 +43,6 @@ const App = () => {
     }
   }, []);
 
-  // throw new Error("bgh");
   return loading ? (
     <Loader />
   ) : (

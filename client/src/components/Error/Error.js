@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 const ErrorUI = () => {
-  return <div>Error</div>;
+  return (
+    <div className="err-page">
+      <img src={require("./../../images/oops.png")} />
+      <a href="/">Go to Home Page</a>
+    </div>
+  );
 };
 
 class Error extends Component {
