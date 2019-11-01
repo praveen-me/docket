@@ -1,11 +1,16 @@
 /* eslint-disable */
 var webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = ({ mode } = { mode: "production" }) => ({
   mode,
   devtool: "inline-source-map",
-  entry: "./client/src/index.js",
+  entry:
+    mode === "development"
+      ? ["webpack-hot-middleware/client", "./client/src/index.js"]
+      : "./client/src/index.js",
   module: {
     rules: [
       {
@@ -38,6 +43,9 @@ module.exports = ({ mode } = { mode: "production" }) => ({
       }
     ]
   },
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
+  },
   output: {
     filename: "[name].bundle.js",
     chunkFilename: "[name].bundle.js",
@@ -54,6 +62,7 @@ module.exports = ({ mode } = { mode: "production" }) => ({
     new MiniCssExtractPlugin({
       filename: "bundle.css"
     }),
-    new webpack.ProgressPlugin()
+    new webpack.ProgressPlugin(),
+    new CleanWebpackPlugin()
   ]
 });
