@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 
 export const SignUpMutation = gql`
   mutation SignUp($input: SignUpInput!) {

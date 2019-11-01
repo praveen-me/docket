@@ -23,7 +23,20 @@ const dev = {
         NODE_ENV: JSON.stringify("development")
       }
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: false,
+        default: false,
+        vendor: {
+          chunks: "all",
+          test: /node_modules/,
+          name: "vendor"
+        }
+      }
+    }
+  }
 };
 
 const common = {
@@ -78,7 +91,18 @@ const production = {
   mode: "production",
   entry,
   optimization: {
-    minimizer: [new UglifyJsPlugin()]
+    minimizer: [new UglifyJsPlugin()],
+    splitChunks: {
+      cacheGroups: {
+        vendors: false,
+        default: false,
+        vendor: {
+          chunks: "all",
+          test: /node_modules/,
+          name: "vendor"
+        }
+      }
+    }
   },
   output: {
     publicPath: "/dist/"
