@@ -1,16 +1,32 @@
 /* eslint-disable */
-var webpack = require("webpack");
+const webpack = require("webpack");
+const merge = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+const TerserPlugin = require("terser-webpack-plugin");
+const entry = "./client/src/index.js";
 
-module.exports = ({ mode } = { mode: "production" }) => ({
-  mode,
+const dev = {
+  mode: "development",
   devtool: "inline-source-map",
-  entry:
-    mode === "development"
-      ? ["webpack-hot-middleware/client", "./client/src/index.js"]
-      : "./client/src/index.js",
+  entry: ["webpack-hot-middleware/client", entry],
+  output: {
+    publicPath: "/static/"
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("development")
+      }
+    })
+  ]
+};
+
+const common = {
   module: {
     rules: [
       {
@@ -43,26 +59,32 @@ module.exports = ({ mode } = { mode: "production" }) => ({
       }
     ]
   },
+  output: {
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js"
+  },
+  plugins: [
+    new webpack.ProgressPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "bundle.css"
+    }),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    })
+  ]
+};
+
+const production = {
+  mode: "production",
+  entry,
   optimization: {
     minimizer: [new UglifyJsPlugin()]
   },
   output: {
-    filename: "[name].bundle.js",
-    chunkFilename: "[name].bundle.js",
-    path: __dirname + "/dist/",
-    publicPath: mode !== "production" ? "/static/" : "/dist/"
+    publicPath: "/dist/"
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("development")
-      }
-    }),
-    new MiniCssExtractPlugin({
-      filename: "bundle.css"
-    }),
-    new webpack.ProgressPlugin(),
-    new CleanWebpackPlugin()
-  ]
-});
+  plugins: [new CleanWebpackPlugin(), new BundleAnalyzerPlugin()]
+};
+
+module.exports = ({ mode } = { mode: "production" }) =>
+  mode === "development" ? merge(dev, common) : merge(production, common);
