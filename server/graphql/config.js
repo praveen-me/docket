@@ -26,6 +26,12 @@ const server = new ApolloServer({
     }
 
     return buildContext({ req, res, currentUser });
+  },
+  introspection: true,
+  playground: true,
+  engine: {
+    apiKey: process.env.ENGINE_API_KEY,
+    schemaTag: "production"
   }
 });
 

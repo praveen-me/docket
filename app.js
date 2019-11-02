@@ -6,6 +6,7 @@ const passport = require("passport");
 const cors = require("cors");
 const server = require("./server/graphql/config");
 const webpackSetup = require("./webpack-setup");
+const PORT = 4000;
 
 require("dotenv").config();
 
@@ -44,6 +45,8 @@ server.applyMiddleware({ app });
 // Requiring routes
 app.use(require("./server/routers/index"));
 
-app.listen(8001, () => {
-  console.log("Server is running on http://localhost:8001");
+app.listen(PORT, () => {
+  console.log(
+    "Server is running on http://localhost:" + PORT + server.graphqlPath
+  );
 });
