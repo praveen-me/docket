@@ -6,7 +6,7 @@ const passport = require("passport");
 const cors = require("cors");
 const server = require("./server/graphql/config");
 const webpackSetup = require("./webpack-setup");
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 require("dotenv").config();
 
