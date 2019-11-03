@@ -107,7 +107,7 @@ const production = {
   output: {
     publicPath: "/dist/"
   },
-  plugins: [new CleanWebpackPlugin(), new BundleAnalyzerPlugin()]
+  plugins: [new CleanWebpackPlugin()]
 };
 
 module.exports = ({ mode } = { mode: "production" }) =>
