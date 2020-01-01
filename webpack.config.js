@@ -105,7 +105,8 @@ const production = {
     }
   },
   output: {
-    publicPath: "/dist/"
+    publicPath: "/public/",
+    path: __dirname + "/public/"
   },
   plugins: [new CleanWebpackPlugin()]
 };

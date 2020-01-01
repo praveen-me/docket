@@ -1,8 +1,8 @@
 require("dotenv").config();
 
 const express = require("express");
-const path = require("path");
 const bodyParser = require("body-parser");
+const path = require("path");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
@@ -18,15 +18,15 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./server/views"));
 
 if (NODE_ENV === "production") {
+  app.use("/public", express.static(path.join(__dirname, "public/")));
 } else {
-  app.use("/dist", express.static(path.join(__dirname, "dist/")));
   app.use("/static", express.static(path.join(__dirname, "static/")));
   webpackSetup(app);
 }
 
 // Connecting To Mongodb
 mongoose.connect(
-  MONGODB_URI,
+  MONGODB_URI || 'mongodb://mongo:27017/docket',
   { useNewUrlParser: true, useUnifiedTopology: true },
   err => {
     if (err) throw err;

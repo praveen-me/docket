@@ -3,7 +3,7 @@ const router = express.Router();
 let defaultPath = "/static";
 
 if (process.env.NODE_ENV === "production") {
-  defaultPath = "/dist";
+  defaultPath = "/public";
 }
 
 router.get("*", (req, res) => {
