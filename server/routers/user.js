@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const auth = require("./../modules/auth");
+const config = require("config");
 
 module.exports = userController => {
   const router = express.Router();
@@ -36,13 +38,17 @@ module.exports = userController => {
 
         res.json({
           user,
-          token: jwt.sign({ user }, "secret")
+          token: jwt.sign({ user }, config.get("jwtSecret"))
         });
       });
     })(req, res, next);
   });
 
-  router.get("/isLoggedIn", async (req, res) => {});
+  router.get("/isLoggedIn", auth.isLoggedIn, (req, res) => {
+    res.json({
+      user: req.user
+    });
+  });
 
   return router;
 };

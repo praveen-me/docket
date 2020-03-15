@@ -69,6 +69,7 @@ app.use(bodyParser.json());
 
 // APIS
 app.use("/api", require("./server/routers/user")(db.userController));
+app.use("/api", require("./server/routers/todo")(db.todoController));
 
 // Requiring routes
 // app.use('/api', require('./server/routers/api'));

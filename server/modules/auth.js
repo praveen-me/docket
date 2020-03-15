@@ -1,15 +1,41 @@
+const { userController } = require("./../../db.js");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+
 /**
  * this function  user is logged in or not
  * and performs actions according to it
-*/
+ */
 module.exports = {
-  isLoggedIn: (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        msg: 'You are not loggedIn. Please Log In',
+  isLoggedIn: async (req, res, next) => {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      res.status(401).json({
+        msg: "Please sign in"
       });
-    } else if(!req.user.msg) {
-      return next();
+      return;
     }
-  },
+
+    if (authorization) {
+      const resFromToken = jwt.verify(authorization, config.get("jwtSecret"));
+
+      const { user } = resFromToken;
+
+      if (user) {
+        await userController.verifyUser(user.username, user => {
+          if (user) {
+            delete user.password;
+
+            req.user = user;
+            next();
+          } else {
+            res.status(401).json({
+              msg: "Please sign in"
+            });
+          }
+        });
+      }
+    }
+  }
 };

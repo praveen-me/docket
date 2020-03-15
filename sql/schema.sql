@@ -13,3 +13,4 @@ CREATE TABLE todos (
 );
 
 CREATE UNIQUE INDEX user_todo on todos(user_id);
+ALTER UNIQUE INDEX user_todo on todos(user_id, id);
