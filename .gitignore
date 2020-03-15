@@ -8,3 +8,5 @@ package-loack.json
 
 
 .env
+
+.DS_Store

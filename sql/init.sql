@@ -15,7 +15,7 @@ BEGIN
 
 END
 $body$
-;
+; 
 ALTER ROLE docket CREATEDB;
 CREATE DATABASE docketdb WITH OWNER=docket;
 GRANT ALL PRIVILEGES ON DATABASE docketdb TO docket;
