@@ -21,5 +21,7 @@ module.exports = todoController => {
       data: todos
     });
   });
+
+  router.delete("/todo/:id", auth.isLoggedIn, async (req, res) => {});
   return router;
 };

@@ -70,6 +70,15 @@ module.exports = db => {
     return result;
   };
 
+  const deleteTodo = async todoId => {
+    const result = await db.oneOrNone(
+      `
+      DELETE FROM todsos WHERE id = $1
+    `,
+      [todoId]
+    );
+  };
+
   return {
     getAllTodos,
     inserTodo

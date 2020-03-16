@@ -12,5 +12,4 @@ CREATE TABLE todos (
 	done BOOLEAN DEFAULT FALSE
 );
 
-CREATE UNIQUE INDEX user_todo on todos(user_id);
-ALTER UNIQUE INDEX user_todo on todos(user_id, id);
+CREATE UNIQUE INDEX user_todo on todos(user_id, id);
