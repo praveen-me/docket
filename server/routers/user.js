@@ -50,5 +50,17 @@ module.exports = userController => {
     });
   });
 
+  router.get('/logout', (req, res) => {
+    console.log(req.session)
+
+    req.session.destroy((e) => {
+      if (e) {
+        throw new Error(e);
+      }
+      
+      res.json({...res.session})
+    });
+  })
+
   return router;
 };

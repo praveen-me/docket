@@ -12,6 +12,7 @@
     "body-parser": "^1.18.3",
     "config": "^3.2.6",
     "connect-mongo": "^2.0.3",
+    "connect-pg-simple": "^6.1.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",

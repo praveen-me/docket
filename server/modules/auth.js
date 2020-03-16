@@ -10,14 +10,15 @@ module.exports = {
   isLoggedIn: async (req, res, next) => {
     const { authorization } = req.headers;
 
-    if (!authorization) {
+    if (!authorization || authorization === 'null') {
       res.status(401).json({
         msg: "Please sign in"
       });
       return;
     }
 
-    if (authorization) {
+    if (authorization !== "null") {
+      console.log("here")
       const resFromToken = jwt.verify(authorization, config.get("jwtSecret"));
 
       const { user } = resFromToken;

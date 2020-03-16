@@ -22,6 +22,12 @@ module.exports = todoController => {
     });
   });
 
-  router.delete("/todo/:id", auth.isLoggedIn, async (req, res) => {});
+  router.delete("/todos/:id", auth.isLoggedIn, async (req, res) => {
+    const {id} = req.params
+
+    const data = await todoController.deleteTodo(id, req.user.id)
+    
+    res.json({data})
+  });
   return router;
 };

@@ -60,7 +60,8 @@ class Dashboard extends Component {
   hanldeDelete = e => {
     const deleteId = e.target.parentElement.id;
     fetch(`/api/todos/${deleteId}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: { Authorization : localStorage.getItem("token")}
     })
       .then(res => res.json())
       .then(data => {

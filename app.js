@@ -1,10 +1,8 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const MongoConnect = require("connect-mongo")(session);
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackConfig = require("./webpack.config");
@@ -18,15 +16,6 @@ const db = require("./db.js");
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./server/views"));
 
-// Connecting To Mongodb
-mongoose.connect(
-  "mongodb://localhost/docket",
-  { useNewUrlParser: true },
-  err => {
-    if (err) throw err;
-    console.log("Connected to mongodb");
-  }
-);
 
 // Webpack config
 if (process.env.NODE_ENV === "development") {
@@ -48,15 +37,16 @@ app.use(
 
 app.use(
   session({
-    secret: "docket session",
+    secret: "session",
     saveUninitialized: false,
     resave: false,
     cookie: {
       maxAge: 360000
     },
-    store: new MongoConnect({ url: "mongodb://localhost/docket-session" })
+    store: new (require('connect-pg-simple')(session))()
   })
 );
+
 app.use(cors());
 app.options("*", cors());
 

@@ -5,6 +5,8 @@ import { setInitialUser } from '../store/actions/auth.action';
 
 class Header extends Component {
   handleLogOut = e => {
+    localStorage.removeItem('token');
+    
     fetch(`/api/logout`)
     .then(res => res.json())
     .then(data => {
@@ -23,14 +25,14 @@ class Header extends Component {
         <div className="shadow wrapper">
           <Link to="/"><h1>Docket</h1></Link>
           {
-            !currentUser._id  ? (
+            !currentUser.id  ? (
               <div className="auth_links-block">
                 <Link to="/login" className="auth_link">Login</Link>
                 <Link to="/signup" className="auth_link">Sign Up</Link>
               </div>
             ) : (
               <div className="auth_links-block">
-                <span className="user-name">Welcome {currentUser.fullName.split(' ')[0]}</span>
+                <span className="user-name">Welcome {currentUser.username}</span>
                 <a href="#" className="auth_link" onClick={this.handleLogOut}>Log out</a>
               </div>
             )
